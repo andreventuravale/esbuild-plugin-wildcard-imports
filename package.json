@@ -1,0 +1,27 @@
+{
+  "name": "esbuild-plugin-wild-imports",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Wildcard-based imports for esbuild.",
+  "main": "index.js",
+  "scripts": {
+    "build": "",
+    "test": "node tests/test-all.js",
+    "lint": "standard --fix"
+  },
+  "keywords": [
+    "esbuild",
+    "plugin",
+    "import",
+    "wildcard",
+    "glob"
+  ],
+  "author": "andreventuravale <andreventuravale@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.20.1",
+    "fast-glob": "^3.3.2",
+    "lodash-es": "^4.17.21",
+    "standard": "^17.1.0"
+  }
+}
