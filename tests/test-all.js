@@ -5,7 +5,7 @@ import wildImports from '../index.js'
 
 const distdir = 'dist'
 
-const entry = 'tests/esm/entry.js'
+const entry = 'tests/esm-import-export/entry.js'
 
 await esbuild.build({
   bundle: true,
@@ -17,6 +17,12 @@ await esbuild.build({
   target: 'node18'
 })
 
-const actual = await import(join('..', distdir, entry))
+const { default: actual } = await import(join('..', distdir, entry))
 
-assert.deepStrictEqual(actual, {})
+assert.deepStrictEqual(actual, {
+  foo: { qux: {}, bar: { baz: {} } },
+  './foo/qux.js': {},
+  'foo/qux': {},
+  './foo/bar/baz.js': {},
+  'foo/bar/baz': {}
+})

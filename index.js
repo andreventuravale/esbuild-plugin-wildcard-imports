@@ -8,7 +8,7 @@ const name = 'wild-imports'
 export default function () {
   return {
     name,
-    setup(build) {
+    setup (build) {
       build.onResolve({ filter: /[*{}]/ }, ({ importer, kind, path, resolveDir }) => {
         if (!kind.match(/^(import-statement|require-call|)$/g)) {
           return {
@@ -54,7 +54,7 @@ export default function () {
             const pathWithNoName = join(dirname(path), basename(path, extname(path)))
 
             const objectPath = pathWithNoName
-              .replace(/\//, '.')
+              .replace(/\//g, '.')
 
             setWith(exports, objectPath, alias, Object)
 
@@ -79,6 +79,8 @@ export default function () {
           })(),
           ''
         ].flat().join('\n')
+
+        // console.log(contents)
 
         return {
           contents,
