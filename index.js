@@ -64,7 +64,7 @@ export default function () {
 
             return [
               kind === 'import-statement' && `import * as ${alias} from '${path}';`,
-              kind === 'require-call' && `const ${alias} = require('${path})';`
+              kind === 'require-call' && `const ${alias} = require('${path}');`
             ].filter(isString)
           }),
           '',
@@ -75,14 +75,12 @@ export default function () {
 
             return [
               kind === 'import-statement'
-                ? `export default ${fragment}`
-                : `module.exports = ${fragment}`
+                ? `export default ${fragment};`
+                : `module.exports = ${fragment};`
             ]
           })(),
           ''
         ].flat().join('\n')
-
-        console.log(contents)
 
         return {
           contents,
