@@ -44,7 +44,9 @@ export default function () {
           cwd: resolveDir
         })
 
-        files = files.filter(path => path !== importer).map(path => relative(resolveDir, path))
+        files = files
+          .filter(path => path !== importer)
+          .map(path => relative(resolveDir, path))
 
         const exports = {}
 
