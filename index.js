@@ -10,7 +10,7 @@ export default function () {
     name,
     setup (build) {
       build.onResolve({ filter: /[*{}]/ }, ({ importer, kind, path, resolveDir }) => {
-        if (!kind.match(/^(entry-point|import-statement|require-call)$/g)) {
+        if (!kind.match(/^(import-statement|require-call)$/g)) {
           return {
             errors: [
               {
