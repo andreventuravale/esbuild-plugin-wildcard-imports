@@ -10,7 +10,7 @@ export default function ({ ignore = [] } = {}) {
     name,
     setup (build) {
       build.onResolve({ filter: /[*{}]/ }, ({ importer, kind, path, resolveDir }) => {
-        if (!kind.match(/^(import-statement|require-call)$/g)) {
+        if (!kind.match(/^(dynamic-import|import-statement|require-call)$/g)) {
           return {
             errors: [
               {
@@ -65,6 +65,7 @@ export default function ({ ignore = [] } = {}) {
             exports[`./${path}`] = alias
 
             return [
+              kind === 'dynamic-import' && `const ${alias} = Promise.resolve(['./${path}', await import('./${path}')])`,
               kind === 'import-statement' && `import * as ${alias} from './${path}';`,
               kind === 'require-call' && `const ${alias} = require('./${path}');`
             ]
@@ -76,9 +77,9 @@ export default function ({ ignore = [] } = {}) {
             const fragment = stringified.replace(/"(_[0-9a-f]+)"/g, (_, alias) => alias)
 
             return [
-              kind === 'import-statement'
-                ? `export default ${fragment};`
-                : `module.exports = ${fragment};`
+              kind === 'dynamic-import' && `export default Object.fromEntries(await Promise.all([${Object.values(exports).join()}]))`,
+              kind === 'import-statement' && `export default ${fragment};`,
+              kind === 'require-call' && `module.exports = ${fragment};`
             ]
           })(),
           ''

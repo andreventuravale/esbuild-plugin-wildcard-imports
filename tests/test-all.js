@@ -31,7 +31,7 @@ for (const entry of entries) {
 
   const options = await import(optionsPath)
 
-  let failed = false
+  let failed = true
 
   try {
     await esbuild.build({
@@ -60,16 +60,20 @@ for (const entry of entries) {
       expected.default ?? expected,
       `The "${entry}" test failed${expected.message ? `: ${expected.message}` : ''}`
     )
+
+    failed = false
   } catch (error) {
+    debug(error.message)
+
     const errorsPath = `./${join(dirname(entry), `errors${extname(entry)}`)}`
 
     const { default: errors } = await import(errorsPath)
 
     if (errors && errors.some(message => error.message.includes(message))) {
+      failed = false
+
       break
     }
-
-    failed = true
 
     throw error
   } finally {
