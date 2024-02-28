@@ -21,7 +21,6 @@
   "devDependencies": {
     "esbuild": "^0.20.1",
     "fast-glob": "^3.3.2",
-    "lodash-es": "^4.17.21",
     "standard": "^17.1.0"
   }
 }

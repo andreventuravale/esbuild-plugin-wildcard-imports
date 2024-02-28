@@ -18,7 +18,7 @@ for (const entry of entries) {
 
   const expectedPath = `./${join(dirname(entry), `expected${extname(entry)}`)}`
 
-  const setupPath = `./${join(dirname(entry), 'setup.js')}`
+  const optionsPath = `./${join(dirname(entry), 'options.js')}`
 
   const outfile = `./${join(dirname(entry), '.actual.js')}`
 
@@ -26,7 +26,7 @@ for (const entry of entries) {
 
   const pkg = JSON.parse(await readFile(pkgPath, 'utf8'))
 
-  const setup = await import(setupPath)
+  const options = await import(optionsPath)
 
   await esbuild.build({
     absWorkingDir: __dirname,
@@ -35,13 +35,15 @@ for (const entry of entries) {
     format: pkg.type === 'module' ? 'esm' : 'cjs',
     outfile,
     platform: 'node',
-    plugins: [wildImports(setup.default ?? setup)],
+    plugins: [wildImports(options.default ?? options)],
     target: 'node18'
   })
 
   const actual = await import(actualPath)
 
   const expected = await import(expectedPath)
+
+  console.log(JSON.stringify({ actual, expected }, null, 2))
 
   assert.deepStrictEqual(
     actual.default ?? actual,
