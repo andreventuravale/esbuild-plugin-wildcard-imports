@@ -13,8 +13,8 @@ test('dynamic imports - the exports comes through the default export', async t =
     absWorkingDir: __workdir,
     stdin: {
       contents: `
-                export default await import('./foo/**/*.js')
-            `,
+        export default await import('./foo/**/*.js')
+      `,
       resolveDir: __workdir
     },
     outdir: '../dist',
