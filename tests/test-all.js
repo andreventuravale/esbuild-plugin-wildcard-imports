@@ -14,11 +14,13 @@ const entries = await glob(`**/${process.argv[2] ? `*${process.argv[2]}*/` : ''}
   ignore: ['**/dist', '**/node_modules']
 })
 
+let success = 0
+
+debug('Tests found:', entries)
+
 for (const entry of entries) {
   console.time(entry)
 
-  console.log('------------------------------------')
-  console.log(entry)
   console.log('------------------------------------')
 
   const optionsPath = `./${join(dirname(entry), 'options.js')}`
@@ -71,15 +73,18 @@ for (const entry of entries) {
 
     if (errors && errors.some(message => error.message.includes(message))) {
       failed = false
-
-      break
+    }
+  } finally {
+    if (!failed) {
+      success++
     }
 
-    throw error
-  } finally {
-    console.log('------------------------------------')
     console.log(failed ? '❌' : '✅')
+
     console.timeEnd(entry)
-    console.log('------------------------------------')
   }
 }
+
+console.log('------------------------------------')
+
+console.log(`Success: ${success} of ${entries.length}`)
