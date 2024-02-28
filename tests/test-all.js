@@ -43,8 +43,6 @@ for (const entry of entries) {
 
   const expected = await import(expectedPath)
 
-  console.log(JSON.stringify({ actual, expected }, null, 2))
-
   assert.deepStrictEqual(
     actual.default ?? actual,
     expected.default ?? expected,
