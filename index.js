@@ -58,7 +58,7 @@ export default function () {
 
             setWith(exports, objectPath, alias, Object)
 
-            exports[path] = alias
+            exports[`./${path}`] = alias
 
             exports[`./${pathWithNoName}`] = alias
 
