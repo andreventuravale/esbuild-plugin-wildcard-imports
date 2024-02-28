@@ -60,11 +60,11 @@ export default function () {
 
             exports[path] = alias
 
-            exports[pathWithNoName] = alias
+            exports[`./${pathWithNoName}`] = alias
 
             return [
-              kind === 'import-statement' && `import * as ${alias} from '${path}';`,
-              kind === 'require-call' && `const ${alias} = require('${path}');`
+              kind === 'import-statement' && `import * as ${alias} from './${path}';`,
+              kind === 'require-call' && `const ${alias} = require('./${path}');`
             ].filter(isString)
           }),
           '',
