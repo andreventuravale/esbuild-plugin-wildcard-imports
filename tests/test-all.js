@@ -14,8 +14,8 @@ const entries = await glob(`**/${process.argv[2] ? `*${process.argv[2]}*/` : ''}
   ignore: ['**/dist', '**/node_modules']
 })
 
-let success = 0
-let failures = 0
+let succeed = 0
+let failed = 0
 
 debug('Tests found:', entries)
 
@@ -34,7 +34,7 @@ for (const entry of entries) {
 
   const options = await import(optionsPath)
 
-  let failed = true
+  let itFailed = true
 
   try {
     await esbuild.build({
@@ -64,7 +64,7 @@ for (const entry of entries) {
       `The "${entry}" test failed${expected.message ? `: ${expected.message}` : ''}`
     )
 
-    failed = false
+    itFailed = false
   } catch (error) {
     debug(error.message)
 
@@ -73,16 +73,16 @@ for (const entry of entries) {
     const { default: errors } = await import(errorsPath)
 
     if (errors && errors.some(message => error.message.includes(message))) {
-      failed = false
+      itFailed = false
     }
   } finally {
-    if (failed) {
-      failures++
-    }else{
-      success++
+    if (itFailed) {
+      failed++
+    } else {
+      succeed++
     }
 
-    console.log(failed ? '❌' : '✅')
+    console.log(itFailed ? '❌' : '✅')
 
     console.timeEnd(entry)
   }
@@ -90,5 +90,6 @@ for (const entry of entries) {
 
 console.log('------------------------------------')
 
-console.log(`Success: ${success} of ${entries.length}`)
-console.log(`Failures: ${failures} of ${failures.length}`)
+console.log(`Total  : ${entries.length}`)
+console.log(`Succeed: ${succeed}`)
+console.log(`Failed : ${failed}`)
