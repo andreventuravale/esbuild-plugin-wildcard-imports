@@ -17,6 +17,7 @@ const entries = await glob('**/actual.js', {
 console.log(entries)
 
 await esbuild.build({
+  logLevel: 'verbose',
   absWorkingDir: __dirname,
   bundle: true,
   entryPoints: entries,

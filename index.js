@@ -10,7 +10,7 @@ export default function () {
     name,
     setup (build) {
       build.onResolve({ filter: /[*{}]/ }, ({ importer, kind, path, resolveDir }) => {
-        if (!kind.match(/^(import-statement|require-call|)$/g)) {
+        if (!kind.match(/^(entry-point|import-statement|require-call)$/g)) {
           return {
             errors: [
               {
@@ -67,6 +67,7 @@ export default function () {
               kind === 'require-call' && `const ${alias} = require('${path})';`
             ].filter(isString)
           }),
+          '',
           (() => {
             const stringified = JSON.stringify(exports, null, 2)
 
@@ -80,6 +81,8 @@ export default function () {
           })(),
           ''
         ].flat().join('\n')
+
+        console.log(contents)
 
         return {
           contents,
