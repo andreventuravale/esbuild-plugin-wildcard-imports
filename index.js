@@ -5,7 +5,7 @@ import { debug } from './util.js'
 
 const name = 'wild-imports'
 
-export default function () {
+export default function ({ ignore = [] } = {}) {
   return {
     name,
     setup (build) {
@@ -44,7 +44,8 @@ export default function () {
           absolute: true,
           cwd: resolveDir,
           ignore: [
-            '**/node_modules'
+            '**/node_modules',
+            ...ignore
           ]
         })
 
