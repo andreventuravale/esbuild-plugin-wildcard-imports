@@ -14,7 +14,7 @@ export default function ({ ignore = [] } = {}) {
           return {
             errors: [
               {
-                text: `can not resolve paths whose kind is "${kind}"`,
+                text: `Cannot resolve paths whose kind is "${kind}"`,
                 location: null
               }
             ]

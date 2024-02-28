@@ -9,15 +9,17 @@ import { debug } from '../util.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-const entries = await glob('**/actual.js', {
+const entries = await glob(`**/${process.argv[2] ? `*${process.argv[2]}*/` : ''}actual.js`, {
   cwd: __dirname,
   ignore: ['**/dist', '**/node_modules']
 })
 
 for (const entry of entries) {
-  const actualPath = `./${join(dirname(entry), '.actual.js')}`
+  console.time(entry)
 
-  const expectedPath = `./${join(dirname(entry), `expected${extname(entry)}`)}`
+  console.log('------------------------------------')
+  console.log(entry)
+  console.log('------------------------------------')
 
   const optionsPath = `./${join(dirname(entry), 'options.js')}`
 
@@ -29,26 +31,51 @@ for (const entry of entries) {
 
   const options = await import(optionsPath)
 
-  await esbuild.build({
-    absWorkingDir: __dirname,
-    bundle: true,
-    entryPoints: [entry],
-    format: pkg.type === 'module' ? 'esm' : 'cjs',
-    outfile,
-    platform: 'node',
-    plugins: [wildImports(options.default ?? options)],
-    target: 'node18'
-  })
+  let failed = false
 
-  const actual = await import(actualPath)
+  try {
+    await esbuild.build({
+      absWorkingDir: __dirname,
+      bundle: true,
+      entryPoints: [entry],
+      format: pkg.type === 'module' ? 'esm' : 'cjs',
+      outfile,
+      platform: 'node',
+      plugins: [wildImports(options.default ?? options)],
+      target: 'node18'
+    })
 
-  const expected = await import(expectedPath)
+    const actualPath = `./${join(dirname(entry), '.actual.js')}`
 
-  debug(JSON.stringify({ actual, expected }, null, 2))
+    const actual = await import(actualPath)
 
-  assert.deepStrictEqual(
-    actual.default ?? actual,
-    expected.default ?? expected,
-    `The "${entry}" test failed${expected.message ? `: ${expected.message}` : ''}`
-  )
+    const expectedPath = `./${join(dirname(entry), `expected${extname(entry)}`)}`
+
+    const expected = await import(expectedPath)
+
+    debug(JSON.stringify({ actual, expected }, null, 2))
+
+    assert.deepStrictEqual(
+      actual.default ?? actual,
+      expected.default ?? expected,
+      `The "${entry}" test failed${expected.message ? `: ${expected.message}` : ''}`
+    )
+  } catch (error) {
+    const errorsPath = `./${join(dirname(entry), `errors${extname(entry)}`)}`
+
+    const { default: errors } = await import(errorsPath)
+
+    if (errors && errors.some(message => error.message.includes(message))) {
+      break
+    }
+
+    failed = true
+
+    throw error
+  } finally {
+    console.log('------------------------------------')
+    console.log(failed ? '❌' : '✅')
+    console.timeEnd(entry)
+    console.log('------------------------------------')
+  }
 }
