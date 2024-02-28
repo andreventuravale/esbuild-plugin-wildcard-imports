@@ -15,6 +15,7 @@ const entries = await glob(`**/${process.argv[2] ? `*${process.argv[2]}*/` : ''}
 })
 
 let success = 0
+let failures = 0
 
 debug('Tests found:', entries)
 
@@ -75,7 +76,9 @@ for (const entry of entries) {
       failed = false
     }
   } finally {
-    if (!failed) {
+    if (failed) {
+      failures++
+    }else{
       success++
     }
 
@@ -88,3 +91,4 @@ for (const entry of entries) {
 console.log('------------------------------------')
 
 console.log(`Success: ${success} of ${entries.length}`)
+console.log(`Failures: ${failures} of ${failures.length}`)
