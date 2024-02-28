@@ -5,9 +5,8 @@
   "description": "Wildcard-based imports for esbuild.",
   "main": "index.js",
   "scripts": {
-    "build": "",
-    "test": "node tests/test-all.js",
-    "lint": "standard --fix"
+    "lint": "standard --fix",
+    "test": "ava ./tests/**/test.js"
   },
   "keywords": [
     "esbuild",
@@ -19,6 +18,7 @@
   "author": "andreventuravale <andreventuravale@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "ava": "^6.1.2",
     "esbuild": "^0.20.1",
     "fast-glob": "^3.3.2",
     "standard": "^17.1.0"

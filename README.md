@@ -27,7 +27,10 @@
 
 - node_modules are always ignored
 
-### Limitations
+### Limitations and known issues
 
 - Nested files containing wildcard imports won't work as expected.
+  - Status: under investigation
+
+- ``Nested files containing wildcard imports won't work as expected.``
   - Status: under investigation

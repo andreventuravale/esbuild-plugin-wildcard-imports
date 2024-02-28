@@ -1,6 +1,6 @@
-.actual.js
 .DS_Store
 .idea
 .vscode
 coverage
+dist
 node_modules
