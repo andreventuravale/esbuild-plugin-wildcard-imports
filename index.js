@@ -10,7 +10,7 @@ export default function ({ ignore = [] } = {}) {
     name,
     setup (build) {
       build.onResolve({ filter: /[*{}]/ }, ({ importer, kind, path, resolveDir }) => {
-        if (!kind.match(/^(dynamic-import|import-statement|require-call)$/g)) {
+        if (!kind.match(/^(dynamic-import|entry-point|import-statement|require-call)$/g)) {
           return {
             errors: [
               {
@@ -85,7 +85,7 @@ export default function ({ ignore = [] } = {}) {
           ''
         ].flat(Number.MAX_SAFE_INTEGER).filter(line => typeof line === 'string').join('\n')
 
-        debug(JSON.stringify({ importer, contents }, null, 2))
+        debug({ importer, contents })
 
         return {
           contents,

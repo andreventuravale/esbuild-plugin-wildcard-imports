@@ -52,22 +52,28 @@ for (const entry of entries) {
 
     const actual = await import(actualPath)
 
+    const messagePath = `./${join(dirname(entry), `message${extname(entry)}`)}`
+
+    const message = await import(messagePath)
+
     const expectedPath = `./${join(dirname(entry), `expected${extname(entry)}`)}`
 
     const expected = await import(expectedPath)
 
-    debug(JSON.stringify({ actual, expected }, null, 2))
+    debug({ actual, expected })
 
     assert.deepStrictEqual(
       actual.default ?? actual,
       expected.default ?? expected,
-      `The "${entry}" test failed${expected.message ? `: ${expected.message}` : ''}`
+      `The "${entry}" test failed${message.default ?? message ? `: ${message.default ?? message}` : ''}`
     )
 
     itFailed = false
   } catch (error) {
     console.error('Test error:', error.message)
+
     error.actual && console.error('Actual:', JSON.stringify(error.actual, null, 2))
+
     error.expected && console.error('Expected:', JSON.stringify(error.expected, null, 2))
 
     const errorsPath = `./${join(dirname(entry), `errors${extname(entry)}`)}`

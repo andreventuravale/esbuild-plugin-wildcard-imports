@@ -15,9 +15,11 @@
 
 ### Import examples
 
-<a href="./tests/cjs-require/actual.js">CommonJs</a>
+<a href="./tests/cjs-require/actual.js">CommonJS</a>
 
-<a href="./tests/esm-import-export/actual.js">ESM</a>
+<a href="./tests/esm-import-export/actual.js">ESM Import => Export</a>
+
+<a href="./tests/esm/actual.js">ESM Export Only</a>
 
 <a href="./tests/esm-dynamic-import/actual.js">ESM Dynamic Import</a>
 
