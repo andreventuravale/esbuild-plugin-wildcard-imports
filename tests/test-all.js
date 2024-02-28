@@ -66,7 +66,9 @@ for (const entry of entries) {
 
     itFailed = false
   } catch (error) {
-    debug(error.message)
+    console.error('Test error:', error.message)
+    error.actual && console.error('Actual:', JSON.stringify(error.actual, null, 2))
+    error.expected && console.error('Expected:', JSON.stringify(error.expected, null, 2))
 
     const errorsPath = `./${join(dirname(entry), `errors${extname(entry)}`)}`
 
