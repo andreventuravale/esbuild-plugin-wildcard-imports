@@ -19,10 +19,19 @@ await esbuild.build({
 
 const { default: actual } = await import(join('..', distdir, entry))
 
-assert.deepStrictEqual(actual, {
-  foo: { qux: {}, bar: { baz: {} } },
-  './foo/qux.js': {},
-  'foo/qux': {},
-  './foo/bar/baz.js': {},
-  'foo/bar/baz': {}
-})
+assert.deepStrictEqual(
+  actual,
+  {
+    foo: {
+      index: { bar: 'bar from index', name: 'foo' },
+      qux: { default: 'qux', name: 'qux' },
+      bar: { baz: { default: 'baz', name: 'baz' } }
+    },
+    './foo/index.js': { bar: 'bar from index', name: 'foo' },
+    'foo/index': { bar: 'bar from index', name: 'foo' },
+    './foo/qux.js': { default: 'qux', name: 'qux' },
+    'foo/qux': { default: 'qux', name: 'qux' },
+    './foo/bar/baz.js': { default: 'baz', name: 'baz' },
+    'foo/bar/baz': { default: 'baz', name: 'baz' }
+  }
+)

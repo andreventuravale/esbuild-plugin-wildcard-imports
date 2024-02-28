@@ -63,24 +63,23 @@ export default function () {
             exports[pathWithNoName] = alias
 
             return [
-              kind === 'import-statement' && `import * as ${alias} from './${path}';`,
-              kind === 'require-call' && `const ${alias} = require('./${path})';`
+              kind === 'import-statement' && `import * as ${alias} from '${path}';`,
+              kind === 'require-call' && `const ${alias} = require('${path})';`
             ].filter(isString)
           }),
-          '',
           (() => {
             const stringified = JSON.stringify(exports, null, 2)
 
             const fragment = stringified.replace(/"(_[0-9a-f]+)"/g, (_, alias) => alias)
 
-            return kind === 'import-statement'
-              ? `export default ${fragment}`
-              : `module.exports = ${fragment}`
+            return [
+              kind === 'import-statement'
+                ? `export default ${fragment}`
+                : `module.exports = ${fragment}`
+            ]
           })(),
           ''
         ].flat().join('\n')
-
-        // console.log(contents)
 
         return {
           contents,
