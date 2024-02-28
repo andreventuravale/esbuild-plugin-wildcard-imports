@@ -1,37 +1,46 @@
 import * as esbuild from 'esbuild'
+import glob from 'fast-glob'
 import assert from 'node:assert'
-import { dirname, join } from 'node:path'
+import { dirname, extname, join, relative } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import wildImports from '../index.js'
 
-const distdir = 'dist'
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
-const entry = 'tests/esm-import-export/entry.js'
+const __distdir = join(__dirname, 'dist')
+
+const entries = await glob('**/actual.js', {
+  cwd: __dirname,
+  ignore: ['**/dist', '**/node_modules']
+})
+
+console.log(entries)
 
 await esbuild.build({
+  absWorkingDir: __dirname,
   bundle: true,
-  entryPoints: [entry],
+  entryPoints: entries,
   format: 'esm',
-  outdir: join(distdir, dirname(entry)),
+  outdir: __distdir,
   platform: 'node',
   plugins: [wildImports()],
   target: 'node18'
 })
 
-const { default: actual } = await import(join('..', distdir, entry))
+for (const entry of entries) {
+  const actualPath = `./${relative(__dirname, join(__distdir, entry))}`
 
-assert.deepStrictEqual(
-  actual,
-  {
-    foo: {
-      index: { bar: 'bar from index', name: 'foo' },
-      qux: { default: 'qux', name: 'qux' },
-      bar: { baz: { default: 'baz', name: 'baz' } }
-    },
-    './foo/index.js': { bar: 'bar from index', name: 'foo' },
-    'foo/index': { bar: 'bar from index', name: 'foo' },
-    './foo/qux.js': { default: 'qux', name: 'qux' },
-    'foo/qux': { default: 'qux', name: 'qux' },
-    './foo/bar/baz.js': { default: 'baz', name: 'baz' },
-    'foo/bar/baz': { default: 'baz', name: 'baz' }
-  }
-)
+  const { default: actual } = await import(actualPath)
+
+  const expectedPath = `./${join(dirname(entry), `expected${extname(entry)}`)}`
+
+  const { default: expected } = await import(expectedPath)
+
+  console.log({ actual, expected })
+
+  assert.deepStrictEqual(
+    actual,
+    expected,
+    `Failed: ${entry}`
+  )
+}
