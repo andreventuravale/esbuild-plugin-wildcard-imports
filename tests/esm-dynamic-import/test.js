@@ -6,19 +6,26 @@ import subject from '../../index.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-test('dynamic imports', async t => {
+const __workdir = join(__dirname, 'fixtures')
+
+test('dynamic imports - the exports comes through the default export', async t => {
   await esbuild.build({
-    absWorkingDir: join(__dirname, 'fixtures'),
-    bundle: true,
-    entryPoints: ['./actual.js'],
-    format: 'esm',
+    absWorkingDir: __workdir,
+    stdin: {
+      contents: `
+                export default await import('./foo/**/*.js')
+            `,
+      resolveDir: __workdir
+    },
     outdir: '../dist',
+    bundle: true,
+    format: 'esm',
     platform: 'node',
     plugins: [subject()],
     target: 'node18'
   })
 
-  const { default: actual } = await import('./dist/actual.js')
+  const { default: actual } = await import('./dist/stdin.js')
 
   const expected = {
     default: {
