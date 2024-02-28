@@ -46,6 +46,6 @@ for (const entry of entries) {
   assert.deepStrictEqual(
     actual.default ?? actual,
     expected.default ?? expected,
-    `Failed: ${entry}`
+    `The "${entry}" test failed: ${expected.message}`
   )
 }
