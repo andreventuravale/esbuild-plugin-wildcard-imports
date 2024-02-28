@@ -41,7 +41,10 @@ export default function () {
       }) => {
         let files = await glob(path, {
           absolute: true,
-          cwd: resolveDir
+          cwd: resolveDir,
+          ignore: [
+            '**/node_modules'
+          ]
         })
 
         files = files
