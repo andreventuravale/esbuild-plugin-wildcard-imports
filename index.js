@@ -1,6 +1,7 @@
 import glob from 'fast-glob'
 import { createHash } from 'node:crypto'
 import { relative } from 'node:path'
+import { debug } from './util.js'
 
 const name = 'wild-imports'
 
@@ -81,6 +82,8 @@ export default function () {
           })(),
           ''
         ].flat(Number.MAX_SAFE_INTEGER).filter(line => typeof line === 'string').join('\n')
+
+        debug(JSON.stringify({ importer, contents }, null, 2))
 
         return {
           contents,

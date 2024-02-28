@@ -5,6 +5,7 @@ import { readFile } from 'node:fs/promises'
 import { dirname, extname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import wildImports from '../index.js'
+import { debug } from '../util.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -43,9 +44,11 @@ for (const entry of entries) {
 
   const expected = await import(expectedPath)
 
+  debug(JSON.stringify({ actual, expected }, null, 2))
+
   assert.deepStrictEqual(
     actual.default ?? actual,
     expected.default ?? expected,
-    `The "${entry}" test failed: ${expected.message}`
+    `The "${entry}" test failed${expected.message ? `: ${expected.message}` : ''}`
   )
 }
