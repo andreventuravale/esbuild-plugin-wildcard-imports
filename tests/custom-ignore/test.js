@@ -28,9 +28,7 @@ test.serial('custom ignore - control', async t => {
 })
 
 test.serial('custom ignore - ignores a single path', async t => {
-  await testCase([
-    '**/grault*'
-  ])
+  await testCase(['**/grault*'])
 
   const { default: actual } = await import('./dist/stdin.js?_=2')
 
