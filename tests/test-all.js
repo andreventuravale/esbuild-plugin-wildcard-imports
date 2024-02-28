@@ -8,7 +8,7 @@ import wildImports from '../index.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-const entries = await glob('**/*nested*/actual.js', {
+const entries = await glob('**/actual.js', {
   cwd: __dirname,
   ignore: ['**/dist', '**/node_modules']
 })

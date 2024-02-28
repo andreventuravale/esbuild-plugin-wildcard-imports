@@ -1,7 +1,7 @@
 import glob from 'fast-glob'
 import { isString, setWith } from 'lodash-es'
 import { createHash } from 'node:crypto'
-import { basename, dirname, extname, join } from 'node:path'
+import { basename, dirname, extname, join, relative } from 'node:path'
 
 const name = 'wild-imports'
 
@@ -25,6 +25,7 @@ export default function ({ tree = true } = {}) {
           namespace: name,
           path,
           pluginData: {
+            importer,
             kind,
             resolveDir
           }
@@ -34,13 +35,21 @@ export default function ({ tree = true } = {}) {
       build.onLoad({ filter: /.*/, namespace: name }, ({
         path,
         pluginData: {
+          importer,
           kind,
           resolveDir
         }
       }) => {
-        const files = glob.sync(path, {
+        let files = glob.sync(path, {
+          absolute: true,
           cwd: resolveDir
         })
+
+        console.log({ importer, files })
+
+        files = files.filter(p => p !== importer).map(p => relative(resolveDir, p))
+
+        console.log({ importer, files })
 
         const exports = {}
 
@@ -83,6 +92,8 @@ export default function ({ tree = true } = {}) {
           })(),
           ''
         ].flat().join('\n')
+
+        console.log(importer, contents)
 
         return {
           contents,
