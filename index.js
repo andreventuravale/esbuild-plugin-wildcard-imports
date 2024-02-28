@@ -31,7 +31,7 @@ export default function () {
         }
       })
 
-      build.onLoad({ filter: /.*/, namespace: name }, ({
+      build.onLoad({ filter: /.*/, namespace: name }, async ({
         path,
         pluginData: {
           importer,
@@ -39,16 +39,12 @@ export default function () {
           resolveDir
         }
       }) => {
-        let files = glob.sync(path, {
+        let files = await glob(path, {
           absolute: true,
           cwd: resolveDir
         })
 
-        console.log({ importer, files })
-
         files = files.filter(path => path !== importer).map(path => relative(resolveDir, path))
-
-        console.log({ importer, files })
 
         const exports = {}
 
@@ -79,9 +75,7 @@ export default function () {
             ]
           })(),
           ''
-        ].flat(Number.MAX_SAFE_INTEGER).filter(ln => typeof ln === 'string').join('\n')
-
-        console.log(importer, contents)
+        ].flat(Number.MAX_SAFE_INTEGER).filter(line => typeof line === 'string').join('\n')
 
         return {
           contents,
