@@ -5,7 +5,7 @@ import { basename, dirname, extname, join } from 'node:path'
 
 const name = 'wild-imports'
 
-export default function () {
+export default function ({ tree = true } = {}) {
   return {
     name,
     setup (build) {
@@ -56,7 +56,9 @@ export default function () {
             const objectPath = pathWithNoName
               .replace(/\//g, '.')
 
-            setWith(exports, objectPath, alias, Object)
+            if (tree) {
+              setWith(exports, objectPath, alias, Object)
+            }
 
             exports[`./${path}`] = alias
 
