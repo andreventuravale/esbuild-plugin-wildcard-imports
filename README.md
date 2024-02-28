@@ -10,6 +10,7 @@
 #### Options
 
 - ignore: string[]
+   - optional: yes 
    - same semantics of fast-glob
 
 ### Import examples
