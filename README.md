@@ -28,6 +28,8 @@
 
   > See https://github.com/mrmlnc/fast-glob
 
+---
+
 ### Usage
 
 ```javascript
@@ -41,6 +43,8 @@
 | name | type | optional | notes |
 |-|-|-|-|
 | ignore | `string[]` | yes | same semantics of fast-glob |
+
+---
 
 ### Some examples where the plugin applies
 
