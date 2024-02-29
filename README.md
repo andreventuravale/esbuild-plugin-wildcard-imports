@@ -5,9 +5,22 @@
 
 ### Instalation
 
-- pnpm add esbuild-plugin-wildcard-imports --save-dev
-- yarn add esbuild-plugin-wildcard-imports --dev
+- pnpm
+
+```bash
+pnpm add esbuild-plugin-wildcard-imports --save-dev
+```
+
+- yarn
+```bash
+yarn add esbuild-plugin-wildcard-imports --dev
+```
+
 - npm install esbuild-plugin-wildcard-imports --save-dev
+
+```bash
+npm install esbuild-plugin-wildcard-imports --save-dev
+```
 
 ### Usage examples
 
