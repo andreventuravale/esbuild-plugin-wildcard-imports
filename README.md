@@ -12,10 +12,10 @@
 - node_modules are always ignored
 
 - Only the following kind of paths are supported:
+  > See https://esbuild.github.io/plugins/#on-resolve-arguments
   - dynamic-import
   - import-statement
   - require-call
-  > See https://esbuild.github.io/plugins/#on-resolve-arguments
 
 - it acts on paths containing one of these characters: `?` `+` `*` `{` `}` `[` `]` `(` `)`
 
