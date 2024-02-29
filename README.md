@@ -31,6 +31,18 @@
 
 ---
 
+### Some examples where the plugin applies
+
+- <a href="./tests/cjs-require/test.js#L16">CommonJS</a>
+
+- <a href="./tests/esm-import-export/test.js#L16">ESM Import => Export</a>
+
+- <a href="./tests/esm-export-aggregation-with-alias/test.js#L16">ESM Export Aggregation ( aliased )</a>
+
+- <a href="./tests/esm-dynamic-import/test.js#L16">ESM Dynamic Import</a>
+
+---
+
 ### Known issues
 
 - Aggregations of type `export * from`, although the most common and helpful case, does not work.
@@ -55,15 +67,3 @@
 - it uses fast-glob as the matching engine
 
   > See https://github.com/mrmlnc/fast-glob
-
----
-
-### Some examples where the plugin applies
-
-- <a href="./tests/cjs-require/test.js#L16">CommonJS</a>
-
-- <a href="./tests/esm-import-export/test.js#L16">ESM Import => Export</a>
-
-- <a href="./tests/esm-export-aggregation-with-alias/test.js#L16">ESM Export Aggregation ( aliased )</a>
-
-- <a href="./tests/esm-dynamic-import/test.js#L16">ESM Dynamic Import</a>
