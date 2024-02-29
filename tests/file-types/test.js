@@ -31,6 +31,10 @@ test('file types - js mjs ts mts', async t => {
 
   const expected = {
     default: {
+      './foo/bar/baz.mjs': {
+        default: 'baz',
+        name: 'baz'
+      },
       './foo/qux.mts': {
         default: 'qux',
         name: 'qux'
@@ -38,10 +42,6 @@ test('file types - js mjs ts mts', async t => {
       './foo/waldo.ts': {
         default: 'waldo',
         name: 'waldo'
-      },
-      './foo/bar/baz.mjs': {
-        default: 'baz',
-        name: 'baz'
       }
     }
   }

@@ -14,7 +14,7 @@ test('ignore node_modules', async t => {
     absWorkingDir: __workdir,
     stdin: {
       contents: `
-        import * as all from './foo/**/*.js'
+        import all from './foo/**/*.js'
 
         export default all
       `,
@@ -41,11 +41,9 @@ test('ignore node_modules', async t => {
   const { default: actual } = await import('./dist/stdin.js')
 
   const expected = {
-    default: {
-      './foo/bar/baz/qux.js': {
-        default: 'qux',
-        name: 'qux'
-      }
+    './foo/bar/baz/qux.js': {
+      default: 'qux',
+      name: 'qux'
     }
   }
 

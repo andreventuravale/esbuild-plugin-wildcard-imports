@@ -16,10 +16,17 @@ test.serial('custom ignore - control ( no ignore )', async t => {
   const { default: actual } = await import(`./dist/stdin.js?_=${sequence++}`)
 
   const expected = {
-    default: {
-      './foo/bar/baz.js': { default: 'baz', name: 'baz' },
-      './foo/qux/grault.js': { default: 'grault', name: 'grault' },
-      './foo/qux/waldo.js': { default: 'waldo', name: 'waldo' }
+    './foo/bar/baz.js': {
+      default: 'baz',
+      name: 'baz'
+    },
+    './foo/qux/grault.js': {
+      default: 'grault',
+      name: 'grault'
+    },
+    './foo/qux/waldo.js': {
+      default: 'waldo',
+      name: 'waldo'
     }
   }
 
@@ -35,15 +42,13 @@ test.serial('custom ignore - ignores a single path', async t => {
   const { default: actual } = await import(`./dist/stdin.js?_=${sequence++}`)
 
   const expected = {
-    default: {
-      './foo/bar/baz.js': {
-        default: 'baz',
-        name: 'baz'
-      },
-      './foo/qux/waldo.js': {
-        default: 'waldo',
-        name: 'waldo'
-      }
+    './foo/bar/baz.js': {
+      default: 'baz',
+      name: 'baz'
+    },
+    './foo/qux/waldo.js': {
+      default: 'waldo',
+      name: 'waldo'
     }
   }
 
@@ -59,8 +64,9 @@ test.serial('custom ignore - ignores a many paths using a single pattern', async
   const { default: actual } = await import(`./dist/stdin.js?_=${sequence++}`)
 
   const expected = {
-    default: {
-      './foo/bar/baz.js': { default: 'baz', name: 'baz' }
+    './foo/bar/baz.js': {
+      default: 'baz',
+      name: 'baz'
     }
   }
 
@@ -76,8 +82,9 @@ test.serial('custom ignore - ignores a many paths using distinct patterns', asyn
   const { default: actual } = await import(`./dist/stdin.js?_=${sequence++}`)
 
   const expected = {
-    default: {
-      './foo/qux/waldo.js': { default: 'waldo', name: 'waldo' }
+    './foo/qux/waldo.js': {
+      default: 'waldo',
+      name: 'waldo'
     }
   }
 
@@ -92,7 +99,7 @@ async function testCase (ignore) {
     absWorkingDir: __workdir,
     stdin: {
       contents: `
-        import * as all from './foo/**/*.js'
+        import all from './foo/**/*.js'
 
         export default all
       `,
