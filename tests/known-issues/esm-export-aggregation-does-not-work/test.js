@@ -29,7 +29,7 @@ test('"export * from" aggregations does not work', async t => {
   /**
    * The control.
    *
-   * To demonstrate how it works with an import followed by a export.
+   * To demonstrate how it works an import followed by a export.
    *
    * An `import agg from` followed by a `export default agg`,
    * are semantically equivalent.
