@@ -5,7 +5,6 @@
   - Reason: under investigation
   - Documented at: <a href="./tests/known-issues/esm-export-aggregation-does-not-work/test.js">./tests/known-issues/esm-export-aggregation-does-not-work/test.js</a>
 
-
 ### Behaviors
 
 - node_modules are always ignored
