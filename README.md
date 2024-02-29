@@ -30,7 +30,7 @@
 
 ---
 
-### Usage
+### Usage examples
 
 ```javascript
     await esbuild.build({
