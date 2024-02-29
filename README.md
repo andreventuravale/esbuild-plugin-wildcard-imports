@@ -26,10 +26,10 @@
 
 ### Some examples where the plugin applies
 
-<a href="./tests/cjs-require/test.js">CommonJS</a>
+<a href="./tests/cjs-require/test.js#L16">CommonJS</a>
 
-<a href="./tests/esm-import-export/test.js">ESM Import => Export</a>
+<a href="./tests/esm-import-export/test.js#L16">ESM Import => Export</a>
 
-<a href="./tests/esm-export-aggregation-with-alias/test.js">ESM Export Aggregation ( aliased )</a>
+<a href="./tests/esm-export-aggregation-with-alias/test.js#L16">ESM Export Aggregation ( aliased )</a>
 
-<a href="./tests/esm-dynamic-import/test.js">ESM Dynamic Import</a>
+<a href="./tests/esm-dynamic-import/test.js#L16">ESM Dynamic Import</a>
