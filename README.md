@@ -1,4 +1,14 @@
 
+### Known issues
+
+- Aggregations of type `export * from` are not supported.
+  - Documented at: <a href="./tests/known-issues/esm-export-aggregation-does-not-work/test.js">./tests/known-issues/esm-export-aggregation-does-not-work/test.js</a>
+
+
+### Behaviors
+
+- node_modules are always ignored
+
 ### Usage
 
 ```javascript
@@ -22,15 +32,3 @@
 <a href="./tests/esm/actual.js">ESM Export Only</a>
 
 <a href="./tests/esm-dynamic-import/actual.js">ESM Dynamic Import</a>
-
-### Behaviors
-
-- node_modules are always ignored
-
-### Limitations and known issues
-
-- Nested files containing wildcard imports won't work as expected.
-  - Status: under investigation
-
-- ``Nested files containing wildcard imports won't work as expected.``
-  - Status: under investigation
