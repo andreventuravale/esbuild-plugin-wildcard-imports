@@ -15,9 +15,11 @@ yarn add esbuild-plugin-wildcard-imports --dev
 npm install esbuild-plugin-wildcard-imports --save-dev
 ```
 
+---
+
 ### Usage examples
 
-#### Basic
+#### The basic
 
 ```javascript
 import * as esbuild from 'esbuild'
@@ -45,7 +47,9 @@ await esbuild.build({
 })
 ```
 
-#### Options
+---
+
+### Options
 
 | name | type | optional | notes |
 |-|-|-|-|
