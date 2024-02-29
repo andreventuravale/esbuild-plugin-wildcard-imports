@@ -15,6 +15,7 @@
   - dynamic-import
   - import-statement
   - require-call
+  > See https://esbuild.github.io/plugins/#on-resolve-arguments
 
 - it acts on paths containing one of these characters: `?` `+` `*` `{` `}` `[` `]` `(` `)`
 
