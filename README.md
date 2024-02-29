@@ -4,12 +4,20 @@
 ### Known issues
 
 - Aggregations of type `export * from`, although the most common and helpful case, does not work.
-  - Reason: under investigation
-  - Documented at: <a href="./tests/known-issues/esm-export-aggregation-does-not-work/test.js">./tests/known-issues/esm-export-aggregation-does-not-work/test.js</a>
+  - Cause: under investigation
+  - Documentation: <a href="./tests/known-issues/esm-export-aggregation-does-not-work/test.js">./tests/known-issues/esm-export-aggregation-does-not-work/test.js</a>
+
+### Limitations
+
+- require.resolve is not supported
+  - Reason: not sure how it is supposed to work
+  - Documentation: <a href="./tests/limitations/require-resolve-not-supported/test.js">./tests/limitations/require-resolve-not-supported/test.js</a>
 
 ### Behaviors
 
 - node_modules are always ignored
+- it uses `/[?+*{}[\]()@|]/` to match the paths of interest
+- it uses https://github.com/mrmlnc/fast-glob as the matching engine
 
 ### Usage
 

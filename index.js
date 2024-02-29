@@ -9,7 +9,7 @@ export default function ({ ignore = [] } = {}) {
   return {
     name,
     setup (build) {
-      build.onResolve({ filter: /[*{},]/ }, ({ importer, kind, path, resolveDir }) => {
+      build.onResolve({ filter: /[?+*{}[\]()@|]/ }, ({ importer, kind, path, resolveDir }) => {
         if (!['dynamic-import', 'import-statement', 'require-call'].includes(kind)) {
           return {
             errors: [
