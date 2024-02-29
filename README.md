@@ -13,26 +13,18 @@
 
 - node_modules are always ignored
 
----
-
 - Only the following kind of paths are supported:
   - dynamic-import
   - import-statement
   - require-call
 
-> See https://esbuild.github.io/plugins/#on-resolve-arguments
-
----
+  > See https://esbuild.github.io/plugins/#on-resolve-arguments
 
 - it acts on paths containing one of these characters: `?` `+` `*` `{` `}` `[` `]` `(` `)`
 
----
-
 - it uses fast-glob as the matching engine
 
-> See https://github.com/mrmlnc/fast-glob
-
----
+  > See https://github.com/mrmlnc/fast-glob
 
 ### Usage
 
