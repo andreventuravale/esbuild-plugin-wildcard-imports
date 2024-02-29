@@ -42,6 +42,7 @@
     await esbuild.build({
         plugins: [wildcardImports({
           ignore: [
+            '**/build',
             '**/dist'
           ]
         })],
