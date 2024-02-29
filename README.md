@@ -1,6 +1,8 @@
 
 <a href="./coverage.txt">Coverage report</a>
 
+---
+
 ### Known issues
 
 - Aggregations of type `export * from`, although the most common and helpful case, does not work.
