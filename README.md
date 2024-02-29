@@ -59,17 +59,17 @@ await esbuild.build({
 
 ### Behaviors
 
-- node_modules are always ignored
+- The node_modules are always ignored.
 
-- only the following kind of paths are supported:
+- Only the following kind of paths are supported:
   - dynamic-import
   - import-statement
   - require-call
 
   > See https://esbuild.github.io/plugins/#on-resolve-arguments
 
-- it acts on paths containing one of these characters: `?` `+` `*` `{` `}` `[` `]` `(` `)`
+- It acts on paths containing one of these characters: `?` `+` `*` `{` `}` `[` `]` `(` `)`.
 
-- it uses fast-glob as the matching engine
+- It uses fast-glob as the matching engine.
 
   > See https://github.com/mrmlnc/fast-glob
