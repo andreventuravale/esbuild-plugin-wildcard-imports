@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "standard --fix",
-    "test": "c8 ava tests/*/test.js tests/*/*/test.js  && c8 report > coverage.txt"
+    "test": "c8 ava tests/*/test.js tests/*/*/test.js && c8 report > coverage.txt"
   },
   "keywords": [
     "esbuild",
