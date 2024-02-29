@@ -8,46 +8,26 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const __workdir = join(__dirname, 'fixtures')
 
-test('require.resolve are not supported', async t => {
-  await esbuild.build({
-    absWorkingDir: __workdir,
-    stdin: {
-      contents: `
-        const all = require.resolve('./foo/**/*.js')
-
-        module.exports = all      
-      `,
-      resolveDir: __workdir
-    },
-    outdir: '../dist',
-    bundle: true,
-    format: 'esm',
-    platform: 'node',
-    plugins: [subject()],
-    target: 'node18'
+test('require.resolve is not supported', async t => {
+  await t.throwsAsync(async () => {
+    await esbuild.build({
+      absWorkingDir: __workdir,
+      stdin: {
+        contents: `
+          const all = require.resolve('./foo/**/*.js')
+  
+          module.exports = all      
+        `,
+        resolveDir: __workdir
+      },
+      outdir: '../dist',
+      bundle: true,
+      format: 'cjs',
+      platform: 'node',
+      plugins: [subject()],
+      target: 'node18'
+    })
+  }, {
+    message: /Cannot resolve paths whose kind is "require-resolve"/
   })
-
-  const { default: actual } = await import('./dist/stdin.js')
-
-  const expected = {
-    default: {
-      './foo/qux.mts': {
-        default: 'qux',
-        name: 'qux'
-      },
-      './foo/waldo.ts': {
-        default: 'waldo',
-        name: 'waldo'
-      },
-      './foo/bar/baz.mjs': {
-        default: 'baz',
-        name: 'baz'
-      }
-    }
-  }
-
-  t.deepEqual(
-    actual,
-    expected
-  )
 })
