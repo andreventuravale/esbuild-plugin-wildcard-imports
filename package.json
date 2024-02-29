@@ -15,7 +15,10 @@
     "plugin",
     "wildcard"
   ],
-  "author": "andreventuravale <andreventuravale@gmail.com>",
+  "author": "Andre Vale <andreventuravale@gmail.com>",
+  "repository": {
+    "url": "https://github.com/andreventuravale/esbuild-plugin-wildcard-imports"
+  },
   "license": "MIT",
   "devDependencies": {
     "ava": "^6.1.2",
