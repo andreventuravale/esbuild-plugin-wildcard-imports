@@ -24,12 +24,12 @@
    - optional: yes 
    - same semantics of fast-glob
 
-### Import examples
+### Some examples where the plugin applies
 
-<a href="./tests/cjs-require/actual.js">CommonJS</a>
+<a href="./tests/cjs-require/test.js">CommonJS</a>
 
-<a href="./tests/esm-import-export/actual.js">ESM Import => Export</a>
+<a href="./tests/esm-import-export/test.js">ESM Import => Export</a>
 
-<a href="./tests/esm/actual.js">ESM Export Only</a>
+<a href="./tests/esm-export-aggregation-with-alias/test.js">ESM Export Aggregation ( aliased )</a>
 
-<a href="./tests/esm-dynamic-import/actual.js">ESM Dynamic Import</a>
+<a href="./tests/esm-dynamic-import/test.js">ESM Dynamic Import</a>
