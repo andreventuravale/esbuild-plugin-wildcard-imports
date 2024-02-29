@@ -34,7 +34,17 @@
 
 ```javascript
     await esbuild.build({
-        plugins: [wildcardImports(options)],
+        plugins: [wildcardImports()],
+    })
+```
+
+```javascript
+    await esbuild.build({
+        plugins: [wildcardImports({
+          ignore: [
+            '**/dist'
+          ]
+        })],
     })
 ```
 
