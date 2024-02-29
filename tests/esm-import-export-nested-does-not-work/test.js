@@ -8,7 +8,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const __workdir = join(__dirname, 'fixtures')
 
-test('(known issue) nested use of wildcard imports are not working', async t => {
+test('nested use of wildcard imports', async t => {
   await esbuild.build({
     absWorkingDir: __workdir,
     stdin: {
@@ -36,11 +36,9 @@ test('(known issue) nested use of wildcard imports are not working', async t => 
     },
     './foo/bar/index.js': {
       default: {
-        default: {
-          './baz/qux.js': {
-            default: 'qux',
-            name: 'qux'
-          }
+        './baz/qux.js': {
+          default: 'qux',
+          name: 'qux'
         }
       }
     }

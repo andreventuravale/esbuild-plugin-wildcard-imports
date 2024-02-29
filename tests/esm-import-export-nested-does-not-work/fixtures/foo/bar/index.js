@@ -1,3 +1,3 @@
-import * as all from './baz/**/*.js'
+import all from './baz/**/*.js'
 
 export default all
