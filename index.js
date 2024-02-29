@@ -9,8 +9,8 @@ export default function ({ ignore = [] } = {}) {
   return {
     name,
     setup (build) {
-      build.onResolve({ filter: /[*{}]/ }, ({ importer, kind, path, resolveDir }) => {
-        if (!kind.match(/^(dynamic-import|import-statement|require-call)$/g)) {
+      build.onResolve({ filter: /[*{},]/ }, ({ importer, kind, path, resolveDir }) => {
+        if (!['dynamic-import', 'import-statement', 'require-call'].includes(kind)) {
           return {
             errors: [
               {
@@ -40,7 +40,7 @@ export default function ({ ignore = [] } = {}) {
           resolveDir
         }
       }) => {
-        let files = await glob(path, {
+        const allFiles = await glob(path, {
           absolute: true,
           cwd: resolveDir,
           ignore: [
@@ -49,7 +49,7 @@ export default function ({ ignore = [] } = {}) {
           ]
         })
 
-        files = files
+        const targetFiles = allFiles
           .filter(path => path !== importer)
           .map(path => relative(resolveDir, path))
 
@@ -57,7 +57,7 @@ export default function ({ ignore = [] } = {}) {
 
         const contents = [
           '',
-          files.map(path => {
+          targetFiles.map(path => {
             const key = createHash('md5').update(path).digest('hex')
 
             const alias = `_${key}`
@@ -65,9 +65,14 @@ export default function ({ ignore = [] } = {}) {
             exports[`./${path}`] = alias
 
             return [
-              kind === 'dynamic-import' && `const ${alias} = Promise.resolve(['./${path}', await import('./${path}')])`,
-              kind === 'import-statement' && `import * as ${alias} from './${path}';`,
-              kind === 'require-call' && `const ${alias} = require('./${path}');`
+              kind === 'dynamic-import' &&
+              `const ${alias} = Promise.resolve(['./${path}', await import('./${path}')])`,
+
+              kind === 'import-statement' &&
+              `import * as ${alias} from './${path}';`,
+
+              kind === 'require-call' &&
+              `const ${alias} = require('./${path}');`
             ]
           }),
           '',
@@ -77,13 +82,21 @@ export default function ({ ignore = [] } = {}) {
             const fragment = stringified.replace(/"(_[0-9a-f]+)"/g, (_, alias) => alias)
 
             return [
-              kind === 'dynamic-import' && `export default Object.fromEntries(await Promise.all([${Object.values(exports).join()}]))`,
-              kind === 'import-statement' && `export default ${fragment};`,
-              kind === 'require-call' && `module.exports = ${fragment};`
+              kind === 'dynamic-import' &&
+              `export default Object.fromEntries(await Promise.all([${Object.values(exports).join(', ')}]))`,
+
+              kind === 'import-statement' &&
+              `export default ${fragment};`,
+
+              kind === 'require-call' &&
+              `module.exports = ${fragment};`
             ]
           })(),
           ''
-        ].flat(Number.MAX_SAFE_INTEGER).filter(line => typeof line === 'string').join('\n')
+        ]
+          .flat(Number.MAX_SAFE_INTEGER)
+          .filter(line => typeof line === 'string')
+          .join('\n')
 
         debug({ importer, contents })
 
