@@ -38,7 +38,7 @@
 
 | name | type | optional | notes |
 |-|-|-|-|
-| ignore | string[] | yes | same semantics of fast-glob |
+| ignore | `string[]` | yes | same semantics of fast-glob |
 
 ### Some examples where the plugin applies
 
