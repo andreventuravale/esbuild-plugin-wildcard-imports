@@ -61,7 +61,7 @@ await esbuild.build({
 
 - node_modules are always ignored
 
-- Only the following kind of paths are supported:
+- only the following kind of paths are supported:
   - dynamic-import
   - import-statement
   - require-call
