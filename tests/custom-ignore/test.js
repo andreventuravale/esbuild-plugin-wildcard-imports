@@ -36,8 +36,14 @@ test.serial('custom ignore - ignores a single path', async t => {
 
   const expected = {
     default: {
-      './foo/bar/baz.js': { default: 'baz', name: 'baz' },
-      './foo/qux/waldo.js': { default: 'waldo', name: 'waldo' }
+      './foo/bar/baz.js': {
+        default: 'baz',
+        name: 'baz'
+      },
+      './foo/qux/waldo.js': {
+        default: 'waldo',
+        name: 'waldo'
+      }
     }
   }
 
