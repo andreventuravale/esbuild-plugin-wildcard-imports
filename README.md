@@ -5,24 +5,19 @@
 
 ### Instalation
 
-- pnpm
-
 ```bash
 pnpm add esbuild-plugin-wildcard-imports --save-dev
 ```
-
-- yarn
 ```bash
 yarn add esbuild-plugin-wildcard-imports --dev
 ```
-
-- npm install esbuild-plugin-wildcard-imports --save-dev
-
 ```bash
 npm install esbuild-plugin-wildcard-imports --save-dev
 ```
 
 ### Usage examples
+
+#### Basic
 
 ```javascript
 import * as esbuild from 'esbuild'
@@ -32,6 +27,8 @@ await esbuild.build({
     plugins: [wildcardImports()],
 })
 ```
+
+#### With custom ignore patterns
 
 ```javascript
 import * as esbuild from 'esbuild'
