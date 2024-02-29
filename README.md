@@ -6,21 +6,27 @@
 ### Usage examples
 
 ```javascript
-    await esbuild.build({
-        plugins: [wildcardImports()],
-    })
+import * as esbuild from 'esbuild'
+import wildcardImports from 'esbuild-plugin-wildcard-imports'
+
+await esbuild.build({
+    plugins: [wildcardImports()],
+})
 ```
 
 ```javascript
-    await esbuild.build({
-        plugins: [wildcardImports({
-          ignore: [
-            '**/{build,dist}',
-            '**/foo',
-            '**/bar'
-          ]
-        })],
-    })
+import * as esbuild from 'esbuild'
+import wildcardImports from 'esbuild-plugin-wildcard-imports'
+
+await esbuild.build({
+    plugins: [wildcardImports({
+      ignore: [
+        '**/{build,dist}',
+        '**/foo',
+        '**/bar'
+      ]
+    })],
+})
 ```
 
 #### Options
