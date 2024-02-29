@@ -10,25 +10,19 @@ export default function ({ ignore = [] } = {}) {
     name,
     setup (build) {
       build.onResolve({ filter: /[?+*{}[\]()]/ }, ({ importer, kind, path, resolveDir }) => {
-        if (!['dynamic-import', 'import-statement', 'require-call'].includes(kind)) {
-          return {
-            errors: [
-              {
-                text: `Cannot resolve paths whose kind is "${kind}"`,
-                location: null
+        switch (kind) {
+          case 'dynamic-import':
+          case 'import-statement':
+          case 'require-call':
+            return {
+              namespace: name,
+              path,
+              pluginData: {
+                importer,
+                kind,
+                resolveDir
               }
-            ]
-          }
-        }
-
-        return {
-          namespace: name,
-          path,
-          pluginData: {
-            importer,
-            kind,
-            resolveDir
-          }
+            }
         }
       })
 

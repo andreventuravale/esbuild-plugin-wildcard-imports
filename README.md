@@ -7,15 +7,14 @@
   - Cause: under investigation
   - Documentation: <a href="./tests/known-issues/esm-export-aggregation-does-not-work/test.js">./tests/known-issues/esm-export-aggregation-does-not-work/test.js</a>
 
-### Limitations
-
-- require.resolve is not supported
-  - Reason: needs further research on how it is supposed to work
-  - Documentation: <a href="./tests/limitations/require-resolve-not-supported/test.js">./tests/limitations/require-resolve-not-supported/test.js</a>
-
 ### Behaviors
 
 - node_modules are always ignored
+
+- Only the following kind of paths are supported:
+  - dynamic-import
+  - import-statement
+  - require-call
 
 - it acts on paths containing one of these characters: `?` `+` `*` `{` `}` `[` `]` `(` `)`
 
