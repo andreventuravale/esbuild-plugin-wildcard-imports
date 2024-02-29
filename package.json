@@ -1,8 +1,8 @@
 {
-  "name": "esbuild-plugin-wild-imports",
+  "name": "esbuild-plugin-wildcard-imports",
   "version": "0.0.1",
   "type": "module",
-  "description": "Wildcard-based imports for esbuild.",
+  "description": "Wildcard imports for esbuild.",
   "main": "index.js",
   "scripts": {
     "lint": "standard --fix",
@@ -10,10 +10,10 @@
   },
   "keywords": [
     "esbuild",
-    "plugin",
+    "glob",
     "import",
-    "wildcard",
-    "glob"
+    "plugin",
+    "wildcard"
   ],
   "author": "andreventuravale <andreventuravale@gmail.com>",
   "license": "MIT",

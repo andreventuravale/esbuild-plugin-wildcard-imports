@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto'
 import { relative } from 'node:path'
 import { debug } from './util.js'
 
-const name = 'wild-imports'
+const name = 'wildcard-imports'
 
 export default function ({ ignore = [] } = {}) {
   return {

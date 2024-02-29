@@ -3,7 +3,7 @@
 
 ```javascript
     await esbuild.build({
-        plugins: [wildImports(options)],
+        plugins: [wildcardImports(options)],
     })
 ```
 
