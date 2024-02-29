@@ -1,7 +1,8 @@
 
 ### Known issues
 
-- Aggregations of type `export * from` are not supported.
+- Aggregations of type `export * from`, although the most common case, does not work.
+  - Reason: under investigation
   - Documented at: <a href="./tests/known-issues/esm-export-aggregation-does-not-work/test.js">./tests/known-issues/esm-export-aggregation-does-not-work/test.js</a>
 
 
