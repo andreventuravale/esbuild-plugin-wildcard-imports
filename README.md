@@ -44,7 +44,7 @@
           ignore: [
             '**/{build,dist}',
             '**/foo',
-            '**/bar',
+            '**/bar'
           ]
         })],
     })
