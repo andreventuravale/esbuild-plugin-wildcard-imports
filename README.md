@@ -16,7 +16,7 @@
 ### Behaviors
 
 - node_modules are always ignored
-- it uses `/[?+*{}[\]()@|]/` to match the paths of interest
+- it uses `/[?+*{}[\]()]/` to match the paths of interest
 - it uses https://github.com/mrmlnc/fast-glob as the matching engine
 
 ### Usage
