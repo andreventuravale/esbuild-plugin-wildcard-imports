@@ -10,13 +10,15 @@
 ### Limitations
 
 - require.resolve is not supported
-  - Reason: not sure how it is supposed to work
+  - Reason: needs further research on how it is supposed to work
   - Documentation: <a href="./tests/limitations/require-resolve-not-supported/test.js">./tests/limitations/require-resolve-not-supported/test.js</a>
 
 ### Behaviors
 
 - node_modules are always ignored
-- it acts on paths containing one of these characters: `?` `+` `*` `{` `}` `[` `]` `(` `)` to match the paths of interest
+
+- it acts on paths containing one of these characters: `?` `+` `*` `{` `}` `[` `]` `(` `)`
+
 - it uses https://github.com/mrmlnc/fast-glob as the matching engine
 
 ### Usage
