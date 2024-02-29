@@ -31,8 +31,9 @@ test('"export * from" aggregations does not work', async t => {
    *
    * To demonstrate how it works an import followed by a export.
    *
-   * An `import agg from` followed by a `export default agg`,
-   * are semantically equivalent.
+   * The control idea is that a `export * from <pattern>` is semantically
+   * equivalent to an `import agg from <pattern>` followed
+   * by a `export default agg`.
    */
   await reproduce(t, expected)(`
     import aggregation from ${pattern}
