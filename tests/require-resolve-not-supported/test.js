@@ -8,7 +8,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const __workdir = join(__dirname, 'fixtures')
 
-test('require.resolve is not supported', async t => {
+test('(limitation) require.resolve is not supported', async t => {
   await t.throwsAsync(async () => {
     await esbuild.build({
       absWorkingDir: __workdir,
