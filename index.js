@@ -10,7 +10,7 @@ export default function ({ ignore = [] } = {}) {
     name,
     setup (build) {
       build.onResolve({ filter: /[*{}]/ }, ({ importer, kind, path, resolveDir }) => {
-        if (!kind.match(/^(dynamic-import|entry-point|import-statement|require-call)$/g)) {
+        if (!kind.match(/^(dynamic-import|import-statement|require-call)$/g)) {
           return {
             errors: [
               {
