@@ -1,16 +1,17 @@
+const { glob } = require('fast-glob')
 const { join } = require('node:path')
 const esbuild = require('esbuild')
-const subject = require('../../index.js')
+const subject = require('../../../index.js')
 const test = require('ava')
 
 const __workdir = join(__dirname, 'fixtures')
 
-test('export aggregation with alias', async (t) => {
+test('ignore node_modules', async (t) => {
   await esbuild.build({
     absWorkingDir: __workdir,
     stdin: {
       contents: `
-        export * as foo from './foo/**/*.js'
+        export * from './foo/**/*.js'
       `,
       resolveDir: __workdir
     },
@@ -22,20 +23,19 @@ test('export aggregation with alias', async (t) => {
     target: 'node18'
   })
 
+  t.true(
+    (await glob('**/*', { cwd: __workdir })).includes(
+      'foo/qux/node_modules/waldo.js'
+    ),
+    'there should be node_modules path in the fixtures'
+  )
+
   const { default: actual } = await import('./dist/stdin.js')
 
   const expected = {
-    foo: {
-      './foo/bar/baz.js': {
-        default: 'baz',
-        name: 'baz'
-      },
-      default: {
-        './foo/bar/baz.js': {
-          default: 'baz',
-          name: 'baz'
-        }
-      }
+    './foo/bar/baz/qux.js': {
+      default: 'qux',
+      name: 'qux'
     }
   }
 

@@ -1,16 +1,16 @@
 const { join } = require('node:path')
 const esbuild = require('esbuild')
-const subject = require('../../index.js')
+const subject = require('../../../index.js')
 const test = require('ava')
 
 const __workdir = join(__dirname, 'fixtures')
 
-test('file types - js mjs ts mts', async (t) => {
+test('export aggregation with alias', async (t) => {
   await esbuild.build({
     absWorkingDir: __workdir,
     stdin: {
       contents: `
-        export * from './foo/**/*.{mjs,mts,js,ts}'
+        export * as foo from './foo/**/*.js'
       `,
       resolveDir: __workdir
     },
@@ -25,17 +25,17 @@ test('file types - js mjs ts mts', async (t) => {
   const { default: actual } = await import('./dist/stdin.js')
 
   const expected = {
-    './foo/bar/baz.mjs': {
-      default: 'baz',
-      name: 'baz'
-    },
-    './foo/qux.mts': {
-      default: 'qux',
-      name: 'qux'
-    },
-    './foo/waldo.ts': {
-      default: 'waldo',
-      name: 'waldo'
+    foo: {
+      './foo/bar/baz.js': {
+        default: 'baz',
+        name: 'baz'
+      },
+      default: {
+        './foo/bar/baz.js': {
+          default: 'baz',
+          name: 'baz'
+        }
+      }
     }
   }
 

@@ -1,17 +1,18 @@
-const { glob } = require('fast-glob')
 const { join } = require('node:path')
 const esbuild = require('esbuild')
-const subject = require('../../index.js')
+const subject = require('../../../index.js')
 const test = require('ava')
 
 const __workdir = join(__dirname, 'fixtures')
 
-test('ignore node_modules', async (t) => {
+test('import and re-export', async (t) => {
   await esbuild.build({
     absWorkingDir: __workdir,
     stdin: {
       contents: `
-        export * from './foo/**/*.js'
+        import foo from './foo/**/*.js'
+
+        export { foo }
       `,
       resolveDir: __workdir
     },
@@ -23,19 +24,18 @@ test('ignore node_modules', async (t) => {
     target: 'node18'
   })
 
-  t.true(
-    (await glob('**/*', { cwd: __workdir })).includes(
-      'foo/qux/node_modules/waldo.js'
-    ),
-    'there should be node_modules path in the fixtures'
-  )
-
   const { default: actual } = await import('./dist/stdin.js')
 
   const expected = {
-    './foo/bar/baz/qux.js': {
-      default: 'qux',
-      name: 'qux'
+    foo: {
+      './foo/bar/baz.js': {
+        default: 'baz',
+        name: 'baz'
+      },
+      './foo/qux.js': {
+        default: 'qux',
+        name: 'qux'
+      }
     }
   }
 

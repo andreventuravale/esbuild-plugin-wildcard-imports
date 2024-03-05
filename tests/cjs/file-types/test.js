@@ -1,18 +1,16 @@
 const { join } = require('node:path')
 const esbuild = require('esbuild')
-const subject = require('../../index.js')
+const subject = require('../../../index.js')
 const test = require('ava')
 
 const __workdir = join(__dirname, 'fixtures')
 
-test('require', async (t) => {
+test('file types - js mjs ts mts', async (t) => {
   await esbuild.build({
     absWorkingDir: __workdir,
     stdin: {
       contents: `
-        const all = require('./foo/**/*.js')
-
-        module.exports = all
+        export * from './foo/**/*.{mjs,mts,js,ts}'
       `,
       resolveDir: __workdir
     },
@@ -27,8 +25,18 @@ test('require', async (t) => {
   const { default: actual } = await import('./dist/stdin.js')
 
   const expected = {
-    './foo/bar/baz.js': 'baz',
-    './foo/qux.js': 'qux'
+    './foo/bar/baz.mjs': {
+      default: 'baz',
+      name: 'baz'
+    },
+    './foo/qux.mts': {
+      default: 'qux',
+      name: 'qux'
+    },
+    './foo/waldo.ts': {
+      default: 'waldo',
+      name: 'waldo'
+    }
   }
 
   t.deepEqual(actual, expected)
