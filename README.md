@@ -4,7 +4,7 @@
 
 ### Limitations & Known issues
 
-- Only works with `platform=node``
+- Only works with `platform=node`
 
 - Only works with `bundle=true`
 
@@ -14,7 +14,7 @@
 
 ### FAQ
 
-- Does it work with format=esm?
+- Does it work with `format=esm?`
 
   - The ESM (ECMAScript Module) output hasn't been extensively covered yet.
 
