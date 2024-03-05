@@ -22,7 +22,7 @@
 
 - Does it work with non-Node.js platforms?
 
-  - I haven't had the time to write tests to cover non-Node.js platforms, so I intentionally focused on the Node.js only.
+  - I haven't had the time to write tests to cover non-Node.js platforms, so I intentionally limited the usage to on the Node.js.
 
 - Are there any plans to migrate it to Go?
 
