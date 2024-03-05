@@ -5,7 +5,7 @@ const test = require('ava')
 
 const __workdir = join(__dirname, 'fixtures')
 
-test('regular import => export', async (t) => {
+test('nested import and re-export', async (t) => {
   await esbuild.build({
     absWorkingDir: __workdir,
     stdin: {
@@ -25,17 +25,17 @@ test('regular import => export', async (t) => {
   const { default: actual } = await import('./dist/stdin.js')
 
   const expected = {
-    './foo/bar/baz.js': {
-      default: 'baz',
-      name: 'baz'
-    },
-    './foo/index.js': {
-      bar: 'bar from index',
-      name: 'foo'
-    },
-    './foo/qux.js': {
+    './foo/bar/baz/qux.js': {
       default: 'qux',
       name: 'qux'
+    },
+    './foo/bar/index.js': {
+      baz: {
+        './baz/qux.js': {
+          default: 'qux',
+          name: 'qux'
+        }
+      }
     }
   }
 
