@@ -63,7 +63,7 @@ module.exports = function ({ ignore = [] } = {}) {
 
               return [
                 kind === 'dynamic-import' &&
-                  `const ${alias} = ['./${path}', ${isCjs ? 'require' : 'Promise.resolve(await import'}('./${path}')]${isCjs ? '' : ')'}`,
+                  `const ${alias} = ['./${path}', ${isCjs ? 'require' : 'await import'}('./${path}')]`,
 
                 ((kind === 'import-statement' && !isCjs) ||
                   (kind === 'require-call' && !isCjs)) &&
@@ -85,7 +85,7 @@ module.exports = function ({ ignore = [] } = {}) {
 
               return [
                 kind === 'dynamic-import' &&
-                  `${isCjs ? 'module.exports =' : 'export default'} Object.fromEntries(${isCjs ? '' : 'await Promise.all('}[${Object.values(exports).join(', ')}])${isCjs ? '' : ')'}`,
+                  `${isCjs ? 'module.exports =' : 'export default'} Object.fromEntries([${Object.values(exports).join(', ')}])`,
 
                 ((kind === 'import-statement' && !isCjs) ||
                   (kind === 'require-call' && !isCjs)) &&

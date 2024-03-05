@@ -5,24 +5,19 @@ const test = require('ava')
 
 const __workdir = join(__dirname, 'fixtures')
 
-test('dynamic imports - the exports comes through the default export', async (t) => {
+test('dynamic imports', async (t) => {
   await esbuild.build({
     absWorkingDir: __workdir,
-    stdin: {
-      contents: `
-        export default await import('./foo/**/*.js')
-      `,
-      resolveDir: __workdir
-    },
-    outdir: '../dist',
+    entryPoints: ['input.js'],
+    outdir: 'dist',
     bundle: true,
-    format: 'cjs',
+    format: 'esm',
     platform: 'node',
     plugins: [subject()],
     target: 'node18'
   })
 
-  const { default: actual } = await import('./dist/stdin.js')
+  const { default: actual } = await import(`${__workdir}/dist/input.js`)
 
   const expected = {
     default: {
