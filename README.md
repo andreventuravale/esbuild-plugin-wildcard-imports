@@ -4,11 +4,9 @@
 
 ### Limitations & Known issues
 
-- Only works with `platform=node`
+- Only works with `platform=node` and `bundle=true`
 
-- Only works with `bundle=true`
-
-- The majority of the automated tests only covers `format=cjs`
+- The majority of the automated tests covers `format=cjs`
 
 - Dynamic imports with top-level await won't work with `format=cjs`
 
