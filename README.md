@@ -12,7 +12,7 @@
 
 ### FAQ
 
-- Does it work with `format=esm?`
+- Does it work with `format=esm`?
 
   - The ESM (ECMAScript Module) output hasn't been extensively covered yet.
 
