@@ -1,15 +1,12 @@
-import test from 'ava'
-import * as esbuild from 'esbuild'
-import glob from 'fast-glob'
-import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
-import subject from '../../index.js'
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
+const { glob } = require('fast-glob')
+const { join } = require('node:path')
+const esbuild = require('esbuild')
+const subject = require('../../index.js')
+const test = require('ava')
 
 const __workdir = join(__dirname, 'fixtures')
 
-test('ignore node_modules', async t => {
+test('ignore node_modules', async (t) => {
   await esbuild.build({
     absWorkingDir: __workdir,
     stdin: {
@@ -24,17 +21,14 @@ test('ignore node_modules', async t => {
     bundle: true,
     format: 'esm',
     platform: 'node',
-    plugins: [
-      subject()
-    ],
+    plugins: [subject()],
     target: 'node18'
   })
 
   t.true(
-    (await glob('**/*', { cwd: __workdir }))
-      .includes(
-        'foo/qux/node_modules/waldo.js'
-      ),
+    (await glob('**/*', { cwd: __workdir })).includes(
+      'foo/qux/node_modules/waldo.js'
+    ),
     'there should be node_modules path in the fixtures'
   )
 
@@ -47,8 +41,5 @@ test('ignore node_modules', async t => {
     }
   }
 
-  t.deepEqual(
-    actual,
-    expected
-  )
+  t.deepEqual(actual, expected)
 })

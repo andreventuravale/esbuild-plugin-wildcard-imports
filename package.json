@@ -1,12 +1,13 @@
 {
   "name": "esbuild-plugin-wildcard-imports",
   "version": "0.0.9",
-  "type": "module",
   "description": "Wildcard imports for esbuild.",
   "main": "index.js",
   "scripts": {
+    "coverage": "c8 pnpm test && c8 report > coverage.txt",
+    "format": "npx prettier . --write",
     "lint": "standard --fix",
-    "test": "c8 ava tests/*/test.js tests/*/*/test.js && c8 report > coverage.txt"
+    "test": "ava"
   },
   "keywords": [
     "esbuild",
@@ -25,6 +26,7 @@
     "c8": "^9.1.0",
     "esbuild": "^0.20.1",
     "fast-glob": "^3.3.2",
+    "prettier": "^3.2.5",
     "standard": "^17.1.0"
   },
   "files": [

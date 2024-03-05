@@ -1,104 +1,115 @@
-import glob from 'fast-glob'
-import { createHash } from 'node:crypto'
-import { relative } from 'node:path'
-import { debug } from './util.js'
+const glob = require('fast-glob')
+const { createHash } = require('node:crypto')
+const { relative } = require('node:path')
+const { debug } = require('./util.js')
 
 const name = 'wildcard-imports'
 
-export default function ({ ignore = [] } = {}) {
+module.exports = function ({ ignore = [] } = {}) {
   return {
     name,
-    setup (build) {
-      build.onResolve({ filter: /[?+*{}[\]()]/ }, ({ importer, kind, path, resolveDir }) => {
-        switch (kind) {
-          case 'dynamic-import':
-          case 'import-statement':
-          case 'require-call':
-            return {
-              namespace: name,
-              path,
-              pluginData: {
-                importer,
-                kind,
-                resolveDir
+    setup(build) {
+      const { format = 'cjs' } = build.initialOptions
+
+      const isCjs = format === 'cjs'
+
+      debug({ isCjs, format })
+
+      build.onResolve(
+        { filter: /[?+*{}[\]()]/ },
+        ({ importer, kind, path, resolveDir }) => {
+          debug({ kind })
+
+          switch (kind) {
+            case 'dynamic-import':
+            case 'import-statement':
+            case 'require-call':
+              return {
+                namespace: name,
+                path,
+                pluginData: {
+                  importer,
+                  kind,
+                  resolveDir
+                }
               }
-            }
+          }
         }
-      })
+      )
 
-      build.onLoad({ filter: /.*/, namespace: name }, async ({
-        path,
-        pluginData: {
-          importer,
-          kind,
-          resolveDir
-        }
-      }) => {
-        const allFiles = await glob(path, {
-          absolute: true,
-          cwd: resolveDir,
-          ignore: [
-            '**/node_modules',
-            ...ignore
+      build.onLoad(
+        { filter: /.*/, namespace: name },
+        async ({ path, pluginData: { importer, kind, resolveDir } }) => {
+          const allFiles = await glob(path, {
+            absolute: true,
+            cwd: resolveDir,
+            ignore: ['**/node_modules', ...ignore]
+          })
+
+          const targetFiles = allFiles
+            .filter((path) => path !== importer)
+            .map((path) => relative(resolveDir, path))
+
+          const exports = {}
+
+          const contents = [
+            '',
+            targetFiles.map((path) => {
+              const key = createHash('md5').update(path).digest('hex')
+
+              const alias = `_${key}`
+
+              exports[`./${path}`] = alias
+
+              return [
+                kind === 'dynamic-import' &&
+                  `const ${alias} = Promise.resolve(['./${path}', await import('./${path}')])`,
+
+                ((kind === 'import-statement' && !isCjs) ||
+                  (kind === 'require-call' && !isCjs)) &&
+                  `import * as ${alias} from './${path}';`,
+
+                ((kind === 'import-statement' && isCjs) ||
+                  (kind === 'require-call' && isCjs)) &&
+                  `const ${alias} = require('./${path}');`
+              ]
+            }),
+            '',
+            (() => {
+              const stringified = JSON.stringify(exports, null, 2)
+
+              const fragment = stringified.replace(
+                /"(_[0-9a-f]+)"/g,
+                (_, alias) => alias
+              )
+
+              return [
+                kind === 'dynamic-import' &&
+                  `export default Object.fromEntries(await Promise.all([${Object.values(exports).join(', ')}]))`,
+
+                ((kind === 'import-statement' && !isCjs) ||
+                  (kind === 'require-call' && !isCjs)) &&
+                  `export default ${fragment};`,
+
+                ((kind === 'import-statement' && isCjs) ||
+                  (kind === 'require-call' && isCjs)) &&
+                  `module.exports = ${fragment};`
+              ]
+            })(),
+            ''
           ]
-        })
+            .flat(Number.MAX_SAFE_INTEGER)
+            .filter((line) => typeof line === 'string')
+            .join('\n')
 
-        const targetFiles = allFiles
-          .filter(path => path !== importer)
-          .map(path => relative(resolveDir, path))
+          debug({ importer, contents })
 
-        const exports = {}
-
-        const contents = [
-          '',
-          targetFiles.map(path => {
-            const key = createHash('md5').update(path).digest('hex')
-
-            const alias = `_${key}`
-
-            exports[`./${path}`] = alias
-
-            return [
-              kind === 'dynamic-import' &&
-              `const ${alias} = Promise.resolve(['./${path}', await import('./${path}')])`,
-
-              kind === 'import-statement' &&
-              `import * as ${alias} from './${path}';`,
-
-              kind === 'require-call' &&
-              `const ${alias} = require('./${path}');`
-            ]
-          }),
-          '',
-          (() => {
-            const stringified = JSON.stringify(exports, null, 2)
-
-            const fragment = stringified.replace(/"(_[0-9a-f]+)"/g, (_, alias) => alias)
-
-            return [
-              kind === 'dynamic-import' &&
-              `export default Object.fromEntries(await Promise.all([${Object.values(exports).join(', ')}]))`,
-
-              kind === 'import-statement' &&
-              `export default ${fragment};`,
-
-              kind === 'require-call' &&
-              `module.exports = ${fragment};`
-            ]
-          })(),
-          ''
-        ]
-          .flat(Number.MAX_SAFE_INTEGER)
-          .filter(line => typeof line === 'string')
-          .join('\n')
-
-        debug({ importer, contents })
-
-        return {
-          contents,
-          resolveDir
+          return {
+            contents,
+            resolveDir
+          }
         }
-      })
+      )
     }
   }
 }

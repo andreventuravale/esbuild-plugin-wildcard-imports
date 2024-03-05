@@ -1,14 +1,11 @@
-import test from 'ava'
-import * as esbuild from 'esbuild'
-import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
-import subject from '../../index.js'
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
+const { join } = require('node:path')
+const esbuild = require('esbuild')
+const subject = require('../../index.js')
+const test = require('ava')
 
 const __workdir = join(__dirname, 'fixtures')
 
-test('export aggregation with alias', async t => {
+test('export aggregation with alias', async (t) => {
   await esbuild.build({
     absWorkingDir: __workdir,
     stdin: {
@@ -36,8 +33,5 @@ test('export aggregation with alias', async t => {
     }
   }
 
-  t.deepEqual(
-    actual,
-    expected
-  )
+  t.deepEqual(actual, expected)
 })

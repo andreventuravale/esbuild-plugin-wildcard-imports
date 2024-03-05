@@ -1,17 +1,14 @@
-import test from 'ava'
-import * as esbuild from 'esbuild'
-import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
-import subject from '../../../index.js'
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
+const { join } = require('node:path')
+const esbuild = require('esbuild')
+const subject = require('../../index.js')
+const test = require('ava')
 
 const __workdir = join(__dirname, 'fixtures')
 
 let sequence = 0
 
-test('"export * from" aggregations does not work', async t => {
-  const pattern = '\'./foo/**/*.js\''
+test('"export * from" aggregations does not work', async (t) => {
+  const pattern = "'./foo/**/*.js'"
 
   const expected = {
     default: {
@@ -35,7 +32,10 @@ test('"export * from" aggregations does not work', async t => {
    * equivalent to an `import agg from <pattern>` followed
    * by a `export default agg`.
    */
-  await reproduce(t, expected)(`
+  await reproduce(
+    t,
+    expected
+  )(`
     import aggregation from ${pattern}
 
     export default aggregation
@@ -50,7 +50,10 @@ test('"export * from" aggregations does not work', async t => {
    *
    * Cause: under investigation
    */
-  await reproduce(t, {})(`
+  await reproduce(
+    t,
+    {}
+  )(`
     export * from ${pattern}
   `)
 })
@@ -72,8 +75,5 @@ const reproduce = (t, expected) => async (contents) => {
 
   const { ...actual } = await import(`./dist/stdin.js?_=${sequence++}`)
 
-  t.deepEqual(
-    actual,
-    expected
-  )
+  t.deepEqual(actual, expected)
 }

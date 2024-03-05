@@ -1,19 +1,20 @@
-import test from 'ava'
-import * as esbuild from 'esbuild'
-import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
-import subject from '../../index.js'
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
+const { join } = require('node:path')
+const esbuild = require('esbuild')
+const subject = require('../../index.js')
+const test = require('ava')
 
 const __workdir = join(__dirname, 'fixtures')
 
 let sequence = 0
 
-test.serial('custom ignore - control ( no ignore )', async t => {
+test.afterEach(() => {
+  sequence++
+})
+
+test.serial('custom ignore - control ( no ignore )', async (t) => {
   await testCase()
 
-  const { default: actual } = await import(`./dist/stdin.js?_=${sequence++}`)
+  const { default: actual } = await import(`./dist/${sequence}/stdin.js`)
 
   const expected = {
     './foo/bar/baz.js': {
@@ -30,16 +31,13 @@ test.serial('custom ignore - control ( no ignore )', async t => {
     }
   }
 
-  t.deepEqual(
-    actual,
-    expected
-  )
+  t.deepEqual(actual, expected)
 })
 
-test.serial('custom ignore - ignores a single path', async t => {
+test.serial('custom ignore - ignores a single path', async (t) => {
   await testCase(['**/grault*'])
 
-  const { default: actual } = await import(`./dist/stdin.js?_=${sequence++}`)
+  const { default: actual } = await import(`./dist/${sequence}/stdin.js`)
 
   const expected = {
     './foo/bar/baz.js': {
@@ -52,66 +50,59 @@ test.serial('custom ignore - ignores a single path', async t => {
     }
   }
 
-  t.deepEqual(
-    actual,
-    expected
-  )
+  t.deepEqual(actual, expected)
 })
 
-test.serial('custom ignore - ignores a many paths using a single pattern', async t => {
-  await testCase(['**/{grault,waldo}*'])
+test.serial(
+  'custom ignore - ignores a many paths using a single pattern',
+  async (t) => {
+    await testCase(['**/{grault,waldo}*'])
 
-  const { default: actual } = await import(`./dist/stdin.js?_=${sequence++}`)
+    const { default: actual } = await import(`./dist/${sequence}/stdin.js`)
 
-  const expected = {
-    './foo/bar/baz.js': {
-      default: 'baz',
-      name: 'baz'
+    const expected = {
+      './foo/bar/baz.js': {
+        default: 'baz',
+        name: 'baz'
+      }
     }
+
+    t.deepEqual(actual, expected)
   }
+)
 
-  t.deepEqual(
-    actual,
-    expected
-  )
-})
+test.serial(
+  'custom ignore - ignores a many paths using distinct patterns',
+  async (t) => {
+    await testCase(['**/baz*', '**/grault*'])
 
-test.serial('custom ignore - ignores a many paths using distinct patterns', async t => {
-  await testCase(['**/baz*', '**/grault*'])
+    const { default: actual } = await import(`./dist/${sequence}/stdin.js`)
 
-  const { default: actual } = await import(`./dist/stdin.js?_=${sequence++}`)
-
-  const expected = {
-    './foo/qux/waldo.js': {
-      default: 'waldo',
-      name: 'waldo'
+    const expected = {
+      './foo/qux/waldo.js': {
+        default: 'waldo',
+        name: 'waldo'
+      }
     }
+
+    t.deepEqual(actual, expected)
   }
+)
 
-  t.deepEqual(
-    actual,
-    expected
-  )
-})
-
-async function testCase (ignore) {
+async function testCase(ignore, format = 'cjs') {
   await esbuild.build({
     absWorkingDir: __workdir,
     stdin: {
       contents: `
-        import all from './foo/**/*.js'
-
-        export default all
+        export * from './foo/**/*.js'
       `,
       resolveDir: __workdir
     },
-    outdir: '../dist',
+    outdir: `../dist/${sequence}`,
     bundle: true,
-    format: 'esm',
+    format,
     platform: 'node',
-    plugins: [
-      subject({ ignore })
-    ],
+    plugins: [subject({ ignore })],
     target: 'node18'
   })
 }

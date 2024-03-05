@@ -1,3 +1,3 @@
-import { debuglog } from 'node:util'
+const { debuglog } = require('node:util')
 
-export const debug = debuglog('epwi')
+module.exports.debug = debuglog('epwi')

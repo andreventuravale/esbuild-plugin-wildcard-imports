@@ -1,4 +1,3 @@
-
 <a href="./coverage.txt">Coverage report</a>
 
 ---
@@ -8,9 +7,11 @@
 ```bash
 pnpm add esbuild-plugin-wildcard-imports --save-dev
 ```
+
 ```bash
 yarn add esbuild-plugin-wildcard-imports --dev
 ```
+
 ```bash
 npm install esbuild-plugin-wildcard-imports --save-dev
 ```
@@ -26,7 +27,7 @@ import * as esbuild from 'esbuild'
 import wildcardImports from 'esbuild-plugin-wildcard-imports'
 
 await esbuild.build({
-    plugins: [wildcardImports()],
+  plugins: [wildcardImports()]
 })
 ```
 
@@ -37,21 +38,19 @@ import * as esbuild from 'esbuild'
 import wildcardImports from 'esbuild-plugin-wildcard-imports'
 
 await esbuild.build({
-    plugins: [wildcardImports({
-      ignore: [
-        '**/{build,dist}',
-        '**/foo',
-        '**/bar'
-      ]
-    })],
+  plugins: [
+    wildcardImports({
+      ignore: ['**/{build,dist}', '**/foo', '**/bar']
+    })
+  ]
 })
 ```
 
 #### Options
 
-| name | type | optional | notes |
-|-|-|-|-|
-| ignore | `string[]` | yes | same semantics of fast-glob |
+| name   | type       | optional | notes                       |
+| ------ | ---------- | -------- | --------------------------- |
+| ignore | `string[]` | yes      | same semantics of fast-glob |
 
 ---
 
@@ -80,6 +79,7 @@ await esbuild.build({
 - The node_modules are always ignored.
 
 - Only the following kind of paths are supported:
+
   - dynamic-import
   - import-statement
   - require-call
