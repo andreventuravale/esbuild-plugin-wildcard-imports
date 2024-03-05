@@ -18,7 +18,7 @@
 
 - Does `format=cjs` mean it only works with CommonJS code?
 
-  - No, it doesn't. You can use it with your ESM code. The `format=cjs` is specifically about the esbuild output format. The library has been tested and works with `format=cjs`.
+  - No, it doesn't. You can use it with your ESM code. The `format=cjs` is specifically about the esbuild output format. The library has been tested and works with ES modules.
 
 - Does it work with non-Node.js platforms?
 
