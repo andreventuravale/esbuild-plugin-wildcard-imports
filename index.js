@@ -18,19 +18,8 @@ module.exports = function ({ ignore = [] } = {}) {
       build.onResolve(
         { filter: /[?+*{}[\]()]/ },
         ({ importer, kind, path, resolveDir }) => {
-          console.log(123)
           if (platform !== 'node') {
             return
-          }
-
-          if (!bundle) {
-            return {
-              warnings: [
-                {
-                  text: `ignoring the "${path}" path because bundle=false`
-                }
-              ]
-            }
           }
 
           debug({ kind })
