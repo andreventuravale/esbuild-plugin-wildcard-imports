@@ -26,7 +26,7 @@
 
 - Are there any plans to migrate it to Go?
 
-  - Yes, there are plans for migration.
+  - Yes but I need to learn how to code with Go first.
 
 ### Behaviors
 
