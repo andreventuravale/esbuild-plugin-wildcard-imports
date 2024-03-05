@@ -1,5 +1,5 @@
 const { join } = require('node:path')
-const { resolveAll } = require('../../util.js')
+const { eagerLoad } = require('../../util.js')
 const esbuild = require('esbuild')
 const subject = require('../../../index.js')
 const test = require('ava')
@@ -17,7 +17,7 @@ test.serial('custom ignore - control ( no ignore )', async (t) => {
 
   const { default: imported } = await import(`./dist/${sequence}/stdin.js`)
 
-  const actual = await resolveAll(imported)
+  const actual = await eagerLoad(imported)
 
   const expected = {
     './foo/bar/baz.js': {
@@ -42,7 +42,7 @@ test.serial('custom ignore - ignores a single path', async (t) => {
 
   const { default: imported } = await import(`./dist/${sequence}/stdin.js`)
 
-  const actual = await resolveAll(imported)
+  const actual = await eagerLoad(imported)
 
   const expected = {
     './foo/bar/baz.js': {
@@ -65,7 +65,7 @@ test.serial(
 
     const { default: imported } = await import(`./dist/${sequence}/stdin.js`)
 
-    const actual = await resolveAll(imported)
+    const actual = await eagerLoad(imported)
 
     const expected = {
       './foo/bar/baz.js': {
@@ -85,7 +85,7 @@ test.serial(
 
     const { default: imported } = await import(`./dist/${sequence}/stdin.js`)
 
-    const actual = await resolveAll(imported)
+    const actual = await eagerLoad(imported)
 
     const expected = {
       './foo/qux/waldo.js': {

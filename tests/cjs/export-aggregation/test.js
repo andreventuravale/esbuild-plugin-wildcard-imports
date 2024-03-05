@@ -1,5 +1,5 @@
 const { join } = require('node:path')
-const { resolveAll } = require('../../util.js')
+const { eagerLoad } = require('../../util.js')
 const esbuild = require('esbuild')
 const subject = require('../../../index.js')
 const test = require('ava')
@@ -27,9 +27,9 @@ test('export aggregation', async (t) => {
 
   const { default: imported } = await import(`./dist/stdin.js?_=${sequence++}`)
 
-  const actual = await resolveAll(imported)
+  const actual = await eagerLoad(imported)
 
-  t.deepEqual(actual, {
+  const expected = {
     './foo/bar/baz.js': {
       default: 'baz',
       name: 'baz'
@@ -38,5 +38,7 @@ test('export aggregation', async (t) => {
       default: 'waldo',
       name: 'waldo'
     }
-  })
+  }
+
+  t.deepEqual(actual, expected)
 })

@@ -2,6 +2,52 @@
 
 ---
 
+### Limitations
+
+- Only works with platform=node
+
+- Only works with bundle=true
+
+- The majority of the automated tests only covers format=cjs
+
+### FAQ
+
+- Does it work with format=esm?
+
+  - The ESM (ECMAScript Module) output hasn't been extensively covered yet.
+
+- Does format=cjs mean it only works with CommonJS code?
+
+  - No, it doesn't. You can use it with your ESM code. The format=cjs is specifically about the esbuild output format. The library has been tested and works with format=cjs.
+
+- Does it work with non-Node.js platforms?
+
+  - I haven't had the time to write tests to cover non-Node.js platforms, so I intentionally focused on the Node.js only.
+
+- Are there any plans to migrate it to Go?
+
+  - Yes, there are plans for migration.
+
+### Behaviors
+
+- The node_modules folders are always ignored.
+
+- Only the following kind of paths are supported:
+
+  - dynamic-import
+  - import-statement
+  - require-call
+
+  > See https://esbuild.github.io/plugins/#on-resolve-arguments
+
+- It acts on paths containing one of these characters: `?` `+` `*` `{` `}` `[` `]` `(` `)`.
+
+- It uses fast-glob as the matching engine.
+
+  > See https://github.com/mrmlnc/fast-glob
+
+---
+
 ### Instalation
 
 ```bash
@@ -63,23 +109,3 @@ await esbuild.build({
 - <a href="./tests/cjs/import-re-export/test.js#L12">ESM import and re-export</a>
 
 - <a href="./tests/esm/dynamic-import/fixtures/input.js">ESM Dynamic Import</a>
-
----
-
-### Behaviors
-
-- The node_modules are always ignored.
-
-- Only the following kind of paths are supported:
-
-  - dynamic-import
-  - import-statement
-  - require-call
-
-  > See https://esbuild.github.io/plugins/#on-resolve-arguments
-
-- It acts on paths containing one of these characters: `?` `+` `*` `{` `}` `[` `]` `(` `)`.
-
-- It uses fast-glob as the matching engine.
-
-  > See https://github.com/mrmlnc/fast-glob

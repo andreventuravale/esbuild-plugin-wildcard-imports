@@ -1,5 +1,5 @@
 const { join } = require('node:path')
-const { resolveAll } = require('../../util.js')
+const { eagerLoad } = require('../../util.js')
 const esbuild = require('esbuild')
 const subject = require('../../../index.js')
 const test = require('ava')
@@ -20,9 +20,7 @@ test('dynamic imports', async (t) => {
 
   const imported = await import(`${__workdir}/dist/input.js`)
 
-  console.log({ imported })
-
-  const actual = await resolveAll(imported)
+  const actual = await eagerLoad(imported)
 
   const expected = {
     foo: {
