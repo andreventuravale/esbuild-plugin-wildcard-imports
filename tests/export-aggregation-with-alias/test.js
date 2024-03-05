@@ -10,25 +10,31 @@ test('export aggregation with alias', async (t) => {
     absWorkingDir: __workdir,
     stdin: {
       contents: `
-        export * as all from './foo/**/*.js'
+        export * as foo from './foo/**/*.js'
       `,
       resolveDir: __workdir
     },
     outdir: '../dist',
     bundle: true,
-    format: 'esm',
+    format: 'cjs',
     platform: 'node',
     plugins: [subject()],
     target: 'node18'
   })
 
-  const { all: actual } = await import('./dist/stdin.js')
+  const { default: actual } = await import('./dist/stdin.js')
 
   const expected = {
-    default: {
+    foo: {
       './foo/bar/baz.js': {
         default: 'baz',
         name: 'baz'
+      },
+      default: {
+        './foo/bar/baz.js': {
+          default: 'baz',
+          name: 'baz'
+        }
       }
     }
   }

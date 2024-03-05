@@ -5,7 +5,9 @@ const test = require('ava')
 
 const __workdir = join(__dirname, 'fixtures')
 
-test('regular import => export ( cjs output )', async (t) => {
+let sequence = 0
+
+test('export aggregation', async (t) => {
   await esbuild.build({
     absWorkingDir: __workdir,
     stdin: {
@@ -22,12 +24,16 @@ test('regular import => export ( cjs output )', async (t) => {
     target: 'node18'
   })
 
-  const { default: actual } = await import('./dist/stdin.js')
+  const { default: actual } = await import(`./dist/stdin.js?_=${sequence++}`)
 
-  const expected = {
-    './foo/bar/baz.js': { default: 'baz', name: 'baz' },
-    './foo/qux.js': { default: 'qux', name: 'qux' }
-  }
-
-  t.deepEqual(actual, expected)
+  t.deepEqual(actual, {
+    './foo/bar/baz.js': {
+      default: 'baz',
+      name: 'baz'
+    },
+    './foo/qux/waldo.js': {
+      default: 'waldo',
+      name: 'waldo'
+    }
+  })
 })

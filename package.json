@@ -4,10 +4,9 @@
   "description": "Wildcard imports for esbuild.",
   "main": "index.js",
   "scripts": {
-    "coverage": "c8 pnpm test && c8 report > coverage.txt",
     "format": "npx prettier . --write",
     "lint": "standard --fix",
-    "test": "ava"
+    "test": "c8 ava tests/*/test.js tests/*/*/test.js && c8 report > coverage.txt"
   },
   "keywords": [
     "esbuild",

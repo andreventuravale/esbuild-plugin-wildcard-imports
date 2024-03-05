@@ -16,7 +16,7 @@ test('dynamic imports - the exports comes through the default export', async (t)
     },
     outdir: '../dist',
     bundle: true,
-    format: 'esm',
+    format: 'cjs',
     platform: 'node',
     plugins: [subject()],
     target: 'node18'

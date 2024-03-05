@@ -10,15 +10,13 @@ test('nested use of wildcard imports', async (t) => {
     absWorkingDir: __workdir,
     stdin: {
       contents: `
-        import all from './foo/**/*.js'
-
-        export default all
+        export * from './foo/**/*.js'
       `,
       resolveDir: __workdir
     },
     outdir: '../dist',
     bundle: true,
-    format: 'esm',
+    format: 'cjs',
     platform: 'node',
     plugins: [subject()],
     target: 'node18'
@@ -32,11 +30,9 @@ test('nested use of wildcard imports', async (t) => {
       name: 'qux'
     },
     './foo/bar/index.js': {
-      default: {
-        './baz/qux.js': {
-          default: 'qux',
-          name: 'qux'
-        }
+      './baz/qux.js': {
+        default: 'qux',
+        name: 'qux'
       }
     }
   }
