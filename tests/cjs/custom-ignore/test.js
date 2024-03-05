@@ -1,4 +1,5 @@
 const { join } = require('node:path')
+const { resolveAll } = require('../../util.js')
 const esbuild = require('esbuild')
 const subject = require('../../../index.js')
 const test = require('ava')
@@ -14,7 +15,9 @@ test.afterEach(() => {
 test.serial('custom ignore - control ( no ignore )', async (t) => {
   await testCase()
 
-  const { default: actual } = await import(`./dist/${sequence}/stdin.js`)
+  const { default: imported } = await import(`./dist/${sequence}/stdin.js`)
+
+  const actual = await resolveAll(imported)
 
   const expected = {
     './foo/bar/baz.js': {
@@ -37,7 +40,9 @@ test.serial('custom ignore - control ( no ignore )', async (t) => {
 test.serial('custom ignore - ignores a single path', async (t) => {
   await testCase(['**/grault*'])
 
-  const { default: actual } = await import(`./dist/${sequence}/stdin.js`)
+  const { default: imported } = await import(`./dist/${sequence}/stdin.js`)
+
+  const actual = await resolveAll(imported)
 
   const expected = {
     './foo/bar/baz.js': {
@@ -58,7 +63,9 @@ test.serial(
   async (t) => {
     await testCase(['**/{grault,waldo}*'])
 
-    const { default: actual } = await import(`./dist/${sequence}/stdin.js`)
+    const { default: imported } = await import(`./dist/${sequence}/stdin.js`)
+
+    const actual = await resolveAll(imported)
 
     const expected = {
       './foo/bar/baz.js': {
@@ -76,7 +83,9 @@ test.serial(
   async (t) => {
     await testCase(['**/baz*', '**/grault*'])
 
-    const { default: actual } = await import(`./dist/${sequence}/stdin.js`)
+    const { default: imported } = await import(`./dist/${sequence}/stdin.js`)
+
+    const actual = await resolveAll(imported)
 
     const expected = {
       './foo/qux/waldo.js': {

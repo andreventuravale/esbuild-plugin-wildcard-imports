@@ -1,1 +1,3 @@
-export default await import('./foo/**/*.js')
+const { default: foo } = await import('./foo/**/*.js')
+
+export { foo }

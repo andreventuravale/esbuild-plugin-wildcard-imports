@@ -1,3 +1,5 @@
 const { debuglog } = require('node:util')
 
-module.exports.debug = debuglog('epwi')
+const debug = debuglog('epwi')
+
+module.exports.debug = debug

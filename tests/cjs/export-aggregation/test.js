@@ -1,4 +1,5 @@
 const { join } = require('node:path')
+const { resolveAll } = require('../../util.js')
 const esbuild = require('esbuild')
 const subject = require('../../../index.js')
 const test = require('ava')
@@ -24,7 +25,9 @@ test('export aggregation', async (t) => {
     target: 'node18'
   })
 
-  const { default: actual } = await import(`./dist/stdin.js?_=${sequence++}`)
+  const { default: imported } = await import(`./dist/stdin.js?_=${sequence++}`)
+
+  const actual = await resolveAll(imported)
 
   t.deepEqual(actual, {
     './foo/bar/baz.js': {

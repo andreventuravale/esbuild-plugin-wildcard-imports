@@ -1,4 +1,5 @@
 const { join } = require('node:path')
+const { resolveAll } = require('../../util.js')
 const esbuild = require('esbuild')
 const subject = require('../../../index.js')
 const test = require('ava')
@@ -10,9 +11,7 @@ test('require', async (t) => {
     absWorkingDir: __workdir,
     stdin: {
       contents: `
-        const all = require('./foo/**/*.js')
-
-        module.exports = all
+        module.exports = require('./foo/**/*.js')
       `,
       resolveDir: __workdir
     },
@@ -24,7 +23,9 @@ test('require', async (t) => {
     target: 'node18'
   })
 
-  const { default: actual } = await import('./dist/stdin.js')
+  const { default: imported } = await import('./dist/stdin.js')
+
+  const actual = await resolveAll(imported)
 
   const expected = {
     './foo/bar/baz.js': 'baz',

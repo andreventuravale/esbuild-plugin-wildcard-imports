@@ -63,15 +63,15 @@ module.exports = function ({ ignore = [] } = {}) {
 
               return [
                 kind === 'dynamic-import' &&
-                  `const ${alias} = ['./${path}', ${isCjs ? 'require' : 'await import'}('./${path}')]`,
+                  `const ${alias} = ['./${path}', async () => ${isCjs ? 'require' : 'await import'}('./${path}')]`,
 
                 ((kind === 'import-statement' && !isCjs) ||
                   (kind === 'require-call' && !isCjs)) &&
-                  `import * as ${alias} from './${path}';`,
+                  `const { default: ${alias} } = async () => import('./${path}');`,
 
                 ((kind === 'import-statement' && isCjs) ||
                   (kind === 'require-call' && isCjs)) &&
-                  `const ${alias} = require('./${path}');`
+                  `const ${alias} = async () => require('./${path}');`
               ]
             }),
             '',

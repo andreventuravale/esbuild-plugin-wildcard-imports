@@ -1,6 +1,6 @@
 {
   "name": "esbuild-plugin-wildcard-imports",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Wildcard imports for esbuild.",
   "main": "index.js",
   "scripts": {
