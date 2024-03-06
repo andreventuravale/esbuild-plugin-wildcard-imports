@@ -90,9 +90,9 @@ module.exports = function ({ ignore = [] } = {}) {
                 (_, alias) => alias
               )
 
-              const esEtringified = JSON.stringify(esExports, null, 2)
+              const esStringified = JSON.stringify(esExports, null, 2)
 
-              const esFragment = esEtringified.replace(
+              const esFragment = esStringified.replace(
                 /"(_[0-9a-f]+)": ("[^"]+")/g,
                 (_, alias, path) => `${alias} as ${path}`
               )
