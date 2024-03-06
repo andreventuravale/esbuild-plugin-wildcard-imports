@@ -102,10 +102,10 @@ await esbuild.build({
 
 ### Some examples where the plugin applies
 
-- <a href="./tests/cjs/require/test.js#L12">CommonJS</a>
+- <a href="./tests/cjs/require/test.js#L14">CommonJS</a>
 
-- <a href="./tests/cjs/export-aggregation/test.js#L14">ESM export aggregation</a>
+- <a href="./tests/cjs/export-aggregation/test.js#L16">ESM export aggregation</a>
 
-- <a href="./tests/cjs/import-re-export/test.js#L12">ESM import and re-export</a>
+- <a href="./tests/cjs/import-re-export/test.js#L14">ESM import and re-export</a>
 
 - <a href="./tests/esm/dynamic-import/fixtures/input.js">ESM Dynamic Import</a>
