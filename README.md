@@ -14,7 +14,7 @@
 
 - Does it work with `format=esm`?
 
-  - The esm output format hasn't been extensively covered yet.
+  - The esm output format was tested to the extent necessary to attain 100% code coverage; however, it was not thoroughly examined for all conceivable scenarios and opportunities.
 
 - Does `format=cjs` mean it only works with CommonJS code?
 

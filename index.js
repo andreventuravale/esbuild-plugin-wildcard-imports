@@ -55,6 +55,7 @@ module.exports = function ({ ignore = [] } = {}) {
             .map((path) => relative(resolveDir, path))
 
           const exports = {}
+          const esExports = {}
 
           const contents = [
             '',
@@ -65,13 +66,15 @@ module.exports = function ({ ignore = [] } = {}) {
 
               exports[`./${path}`] = alias
 
+              esExports[alias] = `./${path}`
+
               return [
                 kind === 'dynamic-import' &&
                 `const ${alias} = ['./${path}', async () => ${isCjs ? 'require' : 'await import'}('./${path}')]`,
 
                 ((kind === 'import-statement' && !isCjs) ||
                   (kind === 'require-call' && !isCjs)) &&
-                `const { default: ${alias} } = async () => import('./${path}');`,
+                `const ${alias} = async () => import('./${path}');`,
 
                 ((kind === 'import-statement' && isCjs) ||
                   (kind === 'require-call' && isCjs)) &&
@@ -87,13 +90,20 @@ module.exports = function ({ ignore = [] } = {}) {
                 (_, alias) => alias
               )
 
+              const esEtringified = JSON.stringify(esExports, null, 2)
+
+              const esFragment = esEtringified.replace(
+                /"(_[0-9a-f]+)": ("[^"]+")/g,
+                (_, alias, path) => `${alias} as ${path}`
+              )
+
               return [
                 kind === 'dynamic-import' &&
                 `${isCjs ? 'module.exports =' : 'export default'} Object.fromEntries([${Object.values(exports).join(', ')}])`,
 
                 ((kind === 'import-statement' && !isCjs) ||
                   (kind === 'require-call' && !isCjs)) &&
-                `export default ${fragment};`,
+                `export ${esFragment};`,
 
                 ((kind === 'import-statement' && isCjs) ||
                   (kind === 'require-call' && isCjs)) &&
