@@ -14,7 +14,7 @@
 
 - Does it work with `format=esm`?
 
-  - The ESM (ECMAScript Module) output hasn't been extensively covered yet.
+  - The esm output format hasn't been extensively covered yet.
 
 - Does `format=cjs` mean it only works with CommonJS code?
 
@@ -26,11 +26,11 @@
 
 - Are there any plans to migrate it to Go?
 
-  - Yes but I need to learn how to code with Go first.
+  - Yes but I need to learn Go first.
 
 ### Behaviors
 
-- The node_modules folders are always ignored.
+- The `node_modules` folders are always ignored.
 
 - Only the following kind of paths are supported:
 
