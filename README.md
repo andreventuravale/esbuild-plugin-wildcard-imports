@@ -16,9 +16,9 @@
 
   - The esm output format was tested to the extent necessary to attain 100% code coverage; however, it was not thoroughly examined for all conceivable scenarios and opportunities.
 
-- Does `format=cjs` mean it only works with CommonJS code?
+- Does `format=cjs` mean the plugin only works with a CommonJS codebase?
 
-  - No, it doesn't. You can use it with your ESM code. The `format=cjs` is specifically about the esbuild output format. The library has been tested and works with ES modules.
+  - Not at all, you can use the plugin with your ES codebase. The `format=cjs` is about the esbuild output format. The library has been tested and works with ES modules.
 
 - Does it work with non-Node.js platforms?
 
