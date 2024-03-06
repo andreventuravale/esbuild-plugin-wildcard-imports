@@ -8,7 +8,7 @@ const name = 'wildcard-imports'
 module.exports = function ({ ignore = [] } = {}) {
   return {
     name,
-    setup(build) {
+    setup (build) {
       const { bundle, format = 'cjs', platform } = build.initialOptions
 
       const isCjs = format === 'cjs'

@@ -1,8 +1,8 @@
 const { glob } = require('fast-glob')
 const { join } = require('node:path')
-const { eagerLoad } = require('../../util.js')
+const { eagerLoad } = require('../util.js')
 const esbuild = require('esbuild')
-const subject = require('../../../index.js')
+const subject = require('../../index.js')
 const test = require('ava')
 
 const __workdir = join(__dirname, 'fixtures')
@@ -26,7 +26,7 @@ test('ignore node_modules', async (t) => {
 
   t.true(
     (await glob('**/*', { cwd: __workdir })).includes(
-      'foo/qux/node_modules/waldo.js'
+      'foo/qux/node_modules/waldo/index.js'
     ),
     'there should be node_modules path in the fixtures'
   )
