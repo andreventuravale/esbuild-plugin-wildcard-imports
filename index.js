@@ -8,7 +8,7 @@ const name = 'wildcard-imports'
 module.exports = function ({ ignore = [] } = {}) {
   return {
     name,
-    setup (build) {
+    setup(build) {
       const { bundle, format = 'cjs', platform } = build.initialOptions
 
       const isCjs = format === 'cjs'
@@ -70,15 +70,15 @@ module.exports = function ({ ignore = [] } = {}) {
 
               return [
                 kind === 'dynamic-import' &&
-                `const ${alias} = ['./${path}', async () => ${isCjs ? 'require' : 'await import'}('./${path}')]`,
+                  `const ${alias} = ['./${path}', async () => ${isCjs ? 'require' : 'await import'}('./${path}')]`,
 
                 ((kind === 'import-statement' && !isCjs) ||
                   (kind === 'require-call' && !isCjs)) &&
-                `const ${alias} = async () => import('./${path}');`,
+                  `const ${alias} = async () => import('./${path}');`,
 
                 ((kind === 'import-statement' && isCjs) ||
                   (kind === 'require-call' && isCjs)) &&
-                `const ${alias} = async () => require('./${path}');`
+                  `const ${alias} = async () => require('./${path}');`
               ]
             }),
             '',
@@ -99,15 +99,15 @@ module.exports = function ({ ignore = [] } = {}) {
 
               return [
                 kind === 'dynamic-import' &&
-                `${isCjs ? 'module.exports =' : 'export default'} Object.fromEntries([${Object.values(exports).join(', ')}])`,
+                  `${isCjs ? 'module.exports =' : 'export default'} Object.fromEntries([${Object.values(exports).join(', ')}])`,
 
                 ((kind === 'import-statement' && !isCjs) ||
                   (kind === 'require-call' && !isCjs)) &&
-                `export ${esFragment};`,
+                  `export ${esFragment};`,
 
                 ((kind === 'import-statement' && isCjs) ||
                   (kind === 'require-call' && isCjs)) &&
-                `module.exports = ${fragment};`
+                  `module.exports = ${fragment};`
               ]
             })(),
             ''

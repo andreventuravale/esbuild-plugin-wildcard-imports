@@ -98,7 +98,7 @@ test.serial(
   }
 )
 
-async function testCase (ignore, format = 'cjs') {
+async function testCase(ignore, format = 'cjs') {
   await esbuild.build({
     absWorkingDir: __workdir,
     stdin: {

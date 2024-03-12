@@ -1,9 +1,10 @@
 {
   "name": "esbuild-plugin-wildcard-imports",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Wildcard imports for esbuild.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "build": "esbuild --format=cjs --bundle --platform=node --target=node20 index.js --outdir=dist",
     "format": "npx prettier . --write",
     "lint": "standard --fix",
     "test": "c8 ava tests/*/test.js tests/*/*/test.js tests/*/*/*/test.js && c8 report > coverage.txt"
@@ -31,7 +32,6 @@
   "files": [
     "./package.json",
     "./LICENSE.md",
-    "./index.js",
-    "./util.js"
+    "./dist/index.js"
   ]
 }
